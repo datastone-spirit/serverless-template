@@ -11,6 +11,7 @@ module.exports = {
     "InjectionKey": true,
     "MaybeRef": true,
     "MaybeRefOrGetter": true,
+    "MessagePlugin": true,
     "PropType": true,
     "Ref": true,
     "VNode": true,

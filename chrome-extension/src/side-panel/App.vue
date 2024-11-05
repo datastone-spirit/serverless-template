@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-10-28 16:58:06
- * @LastEditTime: 2024-11-05 11:52:23
+ * @LastEditTime: 2024-11-05 16:11:54
  * @LastEditors: mulingyuer
  * @Description: app
  * @FilePath: \chrome-extension\src\side-panel\App.vue
@@ -21,4 +21,8 @@
 
 <script setup lang="ts"></script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.side-panel {
+	--transition-fade-slide-duration: 0.15s;
+}
+</style>

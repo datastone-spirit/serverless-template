@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-01 17:16:56
- * @LastEditTime: 2024-11-01 17:28:56
+ * @LastEditTime: 2024-11-05 16:23:27
  * @LastEditors: mulingyuer
  * @Description: 创建上下文菜单列表策略
- * @FilePath: \serverless-api-tester\src\background\context-menus\generate-mens-list-strategy.ts
+ * @FilePath: \chrome-extension\src\background\context-menus\generate-mens-list-strategy.ts
  * 怎么可能会有bug！！！
  */
 import type { ContextMenuStrategy } from "./types";
@@ -22,6 +22,9 @@ export const generateMensListStrategy: ContextMenuStrategy = {
 		return generateMenuList(BaseMenu);
 	},
 	[ContextMenuEnum.CREATE_SERVERLESS_COMFYUI]: () => {
+		return generateMenuList(BaseMenu, ServerlessComfyuiMenu);
+	},
+	[ContextMenuEnum.CREATE_SERVERLESS_SDXL_TEXT2IMG]: () => {
 		return generateMenuList(BaseMenu, ServerlessComfyuiMenu);
 	}
 };

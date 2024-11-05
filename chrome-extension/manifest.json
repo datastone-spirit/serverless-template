@@ -17,7 +17,14 @@
 		"notifications",
 		"contextMenus",
 		"activeTab",
-		"tabs"
+		"tabs",
+		"scripting"
+	],
+	"web_accessible_resources": [
+		{
+			"resources": ["pages/image-preview/index.html"],
+			"matches": ["<all_urls>"]
+		}
 	],
 	"action": {
 		"default_title": "点击打开测试工具"

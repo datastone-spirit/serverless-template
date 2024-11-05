@@ -1,3 +1,7 @@
+:root {
+	--transition-fade-slide-duration: 0.3s;
+}
+
 /* fade */
 .fade-enter-active,
 .fade-leave-active {
@@ -13,8 +17,8 @@
 .fade-slide-leave-active,
 .fade-slide-enter-active {
 	transition:
-		opacity 0.3s,
-		transform 0.3s;
+		opacity var(--transition-fade-slide-duration),
+		transform var(--transition-fade-slide-duration);
 }
 
 .fade-slide-enter-from {
