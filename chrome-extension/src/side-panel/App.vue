@@ -19,6 +19,6 @@ import ServerlessComfyui from "@side-panel/components/ServerlessComfyui/index.vu
 
 <style lang="scss" scoped>
 .side-panel {
-	padding: 20px;
+	padding: 20px 10px;
 }
 </style>

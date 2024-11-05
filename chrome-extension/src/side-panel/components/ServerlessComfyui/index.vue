@@ -1,10 +1,10 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-10-29 15:29:30
- * @LastEditTime: 2024-11-01 17:13:07
+ * @LastEditTime: 2024-11-05 09:26:18
  * @LastEditors: mulingyuer
  * @Description: base64图片组件
- * @FilePath: \serverless-api-tester\src\side-panel\components\ServerlessComfyui\index.vue
+ * @FilePath: \chrome-extension\src\side-panel\components\ServerlessComfyui\index.vue
  * 怎么可能会有bug！！！
 -->
 <template>
@@ -44,9 +44,16 @@
 				</t-radio-group>
 			</t-form-item>
 			<t-form-item>
-				<t-button theme="primary" type="submit" size="large" block :loading="loading">
-					{{ loading ? "正在请求" : "发起请求" }}
-				</t-button>
+				<t-row class="btn-row" :gutter="8">
+					<t-col :span="9">
+						<t-button theme="primary" type="submit" size="large" block :loading="loading">
+							{{ loading ? "正在请求" : "发起请求" }}
+						</t-button>
+					</t-col>
+					<t-col :span="3">
+						<t-button theme="default" size="large" block @click="onCancel"> 取消 </t-button>
+					</t-col>
+				</t-row>
 			</t-form-item>
 		</t-form>
 		<div class="result">
@@ -68,8 +75,6 @@
 <script setup lang="ts">
 import { MessagePlugin, type FormInstanceFunctions, type FormProps } from "tdesign-vue-next";
 import { request } from "@/request";
-// import { useTools } from "@side-panel/hooks/useTools";
-// import { ChromeMessageType } from "@/enums/chrome-message";
 import { useServerlessStore, useTextToImgStore } from "@side-panel/stores";
 import { chromeMessage, EventName } from "@/utils/chrome-message";
 import type { EventCallback } from "@/utils/chrome-message";
@@ -109,6 +114,7 @@ const rules: FormProps["rules"] = {
 	isLarge: [{ required: true, message: "请选择模型", trigger: "blur" }]
 };
 const loading = ref(false);
+let requestController: AbortController | null = null;
 const isImg = ref(true);
 const imgSrc = ref("");
 const otherData = ref("");
@@ -120,26 +126,29 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		loading.value = true;
 		// 缓存数据
 		await saveForm();
+		requestController = new AbortController();
 		// api请求
-		const resString = await request
-			.post<string>(`${form.value.serverlessId}/sync`, {
-				prefixUrl: serverlessStore.baseUrl,
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${form.value.apiKey}`
-				},
-				body: JSON.stringify({
-					input: {
-						prompt: JSON.stringify({
-							keywords: form.value.keywords,
-							width: form.value.width,
-							height: form.value.height,
-							isLarge: form.value.isLarge
-						})
-					}
-				})
+		const resString = await request<string>({
+			url: `${form.value.serverlessId}/sync`,
+			method: "post",
+			responseType: "json",
+			signal: requestController.signal,
+			prefixUrl: serverlessStore.baseUrl,
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${form.value.apiKey}`
+			},
+			body: JSON.stringify({
+				input: {
+					prompt: JSON.stringify({
+						keywords: form.value.keywords,
+						width: form.value.width,
+						height: form.value.height,
+						isLarge: form.value.isLarge
+					})
+				}
 			})
-			.json();
+		});
 		const data = JSON.parse(resString) as { image: string };
 
 		if (Object.hasOwn(data, "image")) {
@@ -151,11 +160,22 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		}
 
 		loading.value = false;
-	} catch (error) {
+	} catch (_error) {
 		loading.value = false;
-		MessagePlugin.error((error as Error)?.message);
 	}
 };
+
+/** 取消请求 */
+function onCancel() {
+	if (!requestController) return;
+	requestController.abort();
+	requestController = null;
+
+	isImg.value = true;
+	imgSrc.value = "";
+	otherData.value = "";
+	loading.value = false;
+}
 
 /** 初始化表单 */
 function initForm() {
@@ -172,21 +192,21 @@ function saveForm() {
 }
 
 /** 填充Serverless ID回调 */
-const fillServerlessId: EventCallback = (message) => {
+const onFillServerlessId: EventCallback = (message) => {
 	const { data } = message;
 	if (!data) return;
 	form.value.serverlessId = data;
 };
 
 /** 填充API key回调 */
-const fillApiKey: EventCallback = (message) => {
+const onFillApiKey: EventCallback = (message) => {
 	const { data } = message;
 	if (!data) return;
 	form.value.apiKey = data;
 };
 
 /** 填充关键词回调 */
-const fillKeyword: EventCallback = (message) => {
+const onFillKeyword: EventCallback = (message) => {
 	const { data } = message;
 	if (!data) return;
 	form.value.keywords = data;
@@ -195,13 +215,13 @@ const fillKeyword: EventCallback = (message) => {
 /** 监听上下文菜单事件 */
 function onContextMenu() {
 	/** 填充Serverless ID */
-	chromeMessage.on(EventName.FILL_SERVERLESS_ID, fillServerlessId);
+	chromeMessage.on(EventName.FILL_SERVERLESS_ID, onFillServerlessId);
 
 	/** 填充API key */
-	chromeMessage.on(EventName.FILL_API_KEY, fillApiKey);
+	chromeMessage.on(EventName.FILL_API_KEY, onFillApiKey);
 
 	/** 填充关键词 */
-	chromeMessage.on(EventName.SERVERLESS_COMFYUI_FILL_KEYWORD, fillKeyword);
+	chromeMessage.on(EventName.SERVERLESS_COMFYUI_FILL_KEYWORD, onFillKeyword);
 
 	/** 创建上下文菜单 */
 	chromeMessage.emit(EventName.CREATE_CONTEXT_MENUS, ContextMenuEnum.CREATE_SERVERLESS_COMFYUI);
@@ -209,9 +229,9 @@ function onContextMenu() {
 
 /** 解除监听上下文菜单事件 */
 function offContextMenu() {
-	chromeMessage.off(EventName.FILL_SERVERLESS_ID, fillServerlessId);
-	chromeMessage.off(EventName.FILL_API_KEY, fillApiKey);
-	chromeMessage.off(EventName.SERVERLESS_COMFYUI_FILL_KEYWORD, fillKeyword);
+	chromeMessage.off(EventName.FILL_SERVERLESS_ID, onFillServerlessId);
+	chromeMessage.off(EventName.FILL_API_KEY, onFillApiKey);
+	chromeMessage.off(EventName.SERVERLESS_COMFYUI_FILL_KEYWORD, onFillKeyword);
 }
 
 /** 初始化 */
@@ -234,6 +254,9 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.btn-row {
+	width: 100%;
+}
 .result {
 	margin-top: 40px;
 	position: relative;

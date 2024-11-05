@@ -11,5 +11,6 @@
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"cSpell.words": ["bumpp", "Comfyui", "mulingyuer", "persistedstate", "pinia", "tdesign"],
-	"github-actions.workflows.pinned.workflows": [".github/workflows/releases.yml"]
+	"github-actions.workflows.pinned.workflows": [".github/workflows/releases.yml"],
+	"typescript.tsdk": "node_modules\\typescript\\lib"
 }

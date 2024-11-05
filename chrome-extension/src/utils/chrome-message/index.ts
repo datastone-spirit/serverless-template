@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 11:40:20
- * @LastEditTime: 2024-11-01 15:45:25
+ * @LastEditTime: 2024-11-04 11:12:34
  * @LastEditors: mulingyuer
  * @Description: 谷歌插件事件订阅
- * @FilePath: \serverless-api-tester\src\utils\chrome-message\index.ts
+ * @FilePath: \chrome-extension\src\utils\chrome-message\index.ts
  * 怎么可能会有bug！！！
  */
 import { EventName } from "./event-name";
@@ -78,7 +78,7 @@ class ChromeMessage {
 				fnList.forEach((fn) => {
 					const result = fn(message, sender, sendResponse);
 					// 如果需要异步响应，则将 hasAsync 设置为 true
-					if (!Boolean(result) && typeof result === "undefined") {
+					if (!hasAsync && result) {
 						hasAsync = true;
 					}
 				});
