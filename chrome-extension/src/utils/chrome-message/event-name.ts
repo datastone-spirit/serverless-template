@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 11:57:42
- * @LastEditTime: 2024-11-01 16:30:56
+ * @LastEditTime: 2024-11-05 11:28:13
  * @LastEditors: mulingyuer
  * @Description: 事件名
- * @FilePath: \serverless-api-tester\src\utils\chrome-message\event-name.ts
+ * @FilePath: \chrome-extension\src\utils\chrome-message\event-name.ts
  * 怎么可能会有bug！！！
  */
 
@@ -16,6 +16,8 @@ export enum EventName {
 
 	/** 创建右键菜单 */
 	CREATE_CONTEXT_MENUS = "create-context-menus",
+	/** 打开新页面 */
+	OPEN_NEW_PAGE = "open-new-page",
 
 	/** serverless-comfyui - 填充文生图关键字 */
 	SERVERLESS_COMFYUI_FILL_KEYWORD = "serverless-comfyui-fill-keyword"

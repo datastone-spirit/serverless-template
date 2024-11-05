@@ -16,7 +16,8 @@
 		"nativeMessaging",
 		"notifications",
 		"contextMenus",
-		"activeTab"
+		"activeTab",
+		"tabs"
 	],
 	"action": {
 		"default_title": "点击打开测试工具"

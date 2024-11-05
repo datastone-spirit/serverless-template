@@ -7,6 +7,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    RouterLink: typeof import('vue-router')['RouterLink']
+    RouterView: typeof import('vue-router')['RouterView']
     TButton: typeof import('tdesign-vue-next')['Button']
     TCol: typeof import('tdesign-vue-next')['Col']
     TEmpty: typeof import('tdesign-vue-next')['Empty']
@@ -17,6 +19,7 @@ declare module 'vue' {
     TRadio: typeof import('tdesign-vue-next')['Radio']
     TRadioGroup: typeof import('tdesign-vue-next')['RadioGroup']
     TRow: typeof import('tdesign-vue-next')['Row']
+    TSpace: typeof import('tdesign-vue-next')['Space']
     TTextarea: typeof import('tdesign-vue-next')['Textarea']
   }
 }

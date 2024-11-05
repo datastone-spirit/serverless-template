@@ -15,7 +15,7 @@ export default defineConfig({
 		vue(),
 		crx({ manifest }),
 		AutoImport({
-			imports: ["vue"],
+			imports: ["vue", "vue-router"],
 			resolvers: [
 				TDesignResolver({
 					library: "vue-next"
