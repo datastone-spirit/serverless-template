@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-10-28 16:58:06
- * @LastEditTime: 2024-11-05 09:47:12
+ * @LastEditTime: 2024-11-05 11:52:23
  * @LastEditors: mulingyuer
  * @Description: app
  * @FilePath: \chrome-extension\src\side-panel\App.vue
@@ -21,8 +21,4 @@
 
 <script setup lang="ts"></script>
 
-<style lang="scss" scoped>
-.side-panel {
-	padding: 20px 10px;
-}
-</style>
+<style lang="scss" scoped></style>

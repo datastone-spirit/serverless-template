@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-10-29 15:29:30
- * @LastEditTime: 2024-11-05 10:00:54
+ * @LastEditTime: 2024-11-05 15:46:18
  * @LastEditors: mulingyuer
  * @Description: base64图片组件
  * @FilePath: \chrome-extension\src\side-panel\views\serverless-comfyui\index.vue
@@ -9,66 +9,34 @@
 -->
 <template>
 	<div class="image-component">
-		<router-link :to="{ name: 'Home' }">home</router-link>
-		<t-form ref="formInstance" :data="form" label-align="top" :rules="rules" @submit="onSubmit">
-			<t-form-item label="ServerLess ID" name="serverlessId">
-				<t-input v-model="form.serverlessId" placeholder="请输入ServerLess ID"></t-input>
-			</t-form-item>
-			<t-form-item label="API key" name="apiKey">
-				<t-input v-model="form.apiKey" placeholder="请输入API key"></t-input>
-			</t-form-item>
-			<t-form-item label="关键词" name="keywords">
-				<t-textarea
-					v-model="form.keywords"
-					placeholder="请输入关键词，英文逗号分隔"
-					:autosize="{ minRows: 5, maxRows: 5 }"
-				/>
-			</t-form-item>
-			<t-form-item>
-				<t-row :gutter="16">
-					<t-col :span="6">
-						<t-form-item label="宽度" name="width" label-align="left" label-width="auto">
-							<t-input v-model.number="form.width" placeholder="请输入宽度"></t-input>
-						</t-form-item>
-					</t-col>
-					<t-col :span="6">
-						<t-form-item label="高度" name="height" label-align="left" label-width="auto">
-							<t-input v-model.number="form.height" placeholder="请输入高度"></t-input>
-						</t-form-item>
-					</t-col>
-				</t-row>
-			</t-form-item>
+		<t-form
+			ref="formInstance"
+			:data="form"
+			label-align="top"
+			:rules="rules"
+			colon
+			@submit="onSubmit"
+		>
+			<ServerLessID v-model="form.serverlessId" name="serverlessId" />
+			<APIKey v-model="form.apiKey" name="apiKey" />
+			<Keywords v-model="form.keywords" name="keywords" />
+			<WidthOrHeight
+				v-model:width="form.width"
+				v-model:height="form.height"
+				width-name="width"
+				height-name="height"
+			/>
 			<t-form-item label="选择模型" name="isLarge">
 				<t-radio-group v-model="form.isLarge">
 					<t-radio :value="true">SD3.5 Large</t-radio>
 					<t-radio :value="false">SD3.5 Medium</t-radio>
 				</t-radio-group>
 			</t-form-item>
-			<t-form-item>
-				<t-row class="btn-row" :gutter="8">
-					<t-col :span="9">
-						<t-button theme="primary" type="submit" size="large" block :loading="loading">
-							{{ loading ? "正在请求" : "发起请求" }}
-						</t-button>
-					</t-col>
-					<t-col :span="3">
-						<t-button theme="default" size="large" block @click="onCancel"> 取消 </t-button>
-					</t-col>
-				</t-row>
-			</t-form-item>
+			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
 		<div class="result">
-			<div v-if="isImg" class="image-preview">
-				<t-image v-if="imgSrc" class="image-preview-img" :src="imgSrc" fit="contain" />
-				<t-empty v-else />
-			</div>
-			<div v-else class="other-data">
-				<t-textarea
-					v-model="otherData"
-					placeholder="暂无内容"
-					:autosize="{ minRows: 5, maxRows: 15 }"
-				/>
-			</div>
+			<ImageResponse v-if="isImg" :src="imgSrc" />
+			<JsonResponse v-else :json="otherData" />
 		</div>
 	</div>
 </template>
@@ -80,6 +48,13 @@ import { useServerlessStore, useTextToImgStore } from "@side-panel/stores";
 import { chromeMessage, EventName } from "@/utils/chrome-message";
 import type { EventCallback } from "@/utils/chrome-message";
 import { ContextMenuEnum } from "@/background/context-menus";
+import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
+import APIKey from "@side-panel/components/form/APIKey.vue";
+import Keywords from "@side-panel/components/form/Keywords.vue";
+import WidthOrHeight from "@side-panel/components/form/WidthOrHeight.vue";
+import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
+import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
+import ImageResponse from "@side-panel/components/response/ImageResponse.vue";
 
 export interface Form {
 	serverlessId: string;
@@ -171,11 +146,6 @@ function onCancel() {
 	if (!requestController) return;
 	requestController.abort();
 	requestController = null;
-
-	isImg.value = true;
-	imgSrc.value = "";
-	otherData.value = "";
-	loading.value = false;
 }
 
 /** 初始化表单 */
@@ -255,38 +225,7 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.btn-row {
-	width: 100%;
-}
 .result {
 	margin-top: 40px;
-	position: relative;
-	&::before {
-		content: "";
-		padding-top: 70%;
-		display: block;
-	}
-}
-.image-preview,
-.other-data {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-}
-.image-preview {
-	bottom: 0;
-	overflow: hidden;
-	border-width: 1px;
-	border-style: solid;
-	border-radius: var(--td-radius-default);
-	border-color: var(--td-border-level-2-color);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.image-preview-img {
-	width: 100%;
-	height: 100%;
 }
 </style>

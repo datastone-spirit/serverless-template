@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 10:51:07
- * @LastEditTime: 2024-11-05 11:22:00
+ * @LastEditTime: 2024-11-05 11:40:33
  * @LastEditors: mulingyuer
  * @Description: 本地数据
  * @FilePath: \chrome-extension\src\side-panel\views\home\data.ts
@@ -34,7 +34,7 @@ export const HomeList: List = [
 	{
 		id: 2,
 		name: "sdxl-text2img",
-		description: "通过SDXL Base 模型进行问生图",
+		description: "通过SDXL Base 模型进行文生图",
 		dockerImage: "megaease/sd-serverless:v1",
 		detailUrl:
 			"https://serverless.datastone.cn/sprite/app/tmpl/serverless-detail?id=23&pyType=serverlessOfficial",
