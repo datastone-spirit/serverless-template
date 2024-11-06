@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:44:26
- * @LastEditTime: 2024-11-06 17:26:23
+ * @LastEditTime: 2024-11-06 17:46:33
  * @LastEditors: mulingyuer
  * @Description: 首页
  * @FilePath: \chrome-extension\src\side-panel\views\home\index.vue
