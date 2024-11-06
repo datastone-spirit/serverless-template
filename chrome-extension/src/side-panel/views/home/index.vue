@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:44:26
- * @LastEditTime: 2024-11-06 14:45:03
+ * @LastEditTime: 2024-11-06 17:26:23
  * @LastEditors: mulingyuer
  * @Description: 首页
  * @FilePath: \chrome-extension\src\side-panel\views\home\index.vue
@@ -19,12 +19,19 @@
 						></div>
 						<div class="home-list-item-content">
 							<h2 class="home-list-item-title">{{ item.name }}</h2>
-							<p class="home-list-item-docker-image">容器镜像：{{ item.dockerImage }}</p>
 							<p class="home-list-item-description">{{ item.description }}</p>
 							<div class="home-list-item-footer">
 								<t-space :size="8">
-									<t-button variant="outline" size="medium" @click="onViewDetail(item)">
-										详情
+									<t-button
+										v-if="item.detailUrl"
+										variant="outline"
+										size="medium"
+										@click="onViewDetail(item)"
+									>
+										{{ item.detailBtnText ? item.detailBtnText : "详情" }}
+									</t-button>
+									<t-button v-else theme="default" variant="base" size="medium" disabled>
+										暂无
 									</t-button>
 									<t-button theme="primary" size="medium" @click="onRunTester(item)">
 										<template #icon>
@@ -105,15 +112,12 @@ function onViewDetail(item: List[number]) {
 	line-height: 1.3;
 	@include text-ellipsis();
 }
-.home-list-item-docker-image {
-	font-size: 14px;
-	color: rgba(255, 255, 255, 0.5);
-}
 .home-list-item-description {
-	margin-top: 10px;
-	font-size: 16px;
+	margin-top: 5px;
+	font-size: 14px;
 	color: rgba(255, 255, 255, 0.8);
-	@include ellipsis-rows(2);
+	@include ellipsis-rows(3);
+	word-break: break-all;
 }
 .home-list-item-footer {
 	position: absolute;

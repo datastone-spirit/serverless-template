@@ -37,6 +37,22 @@ html {
 
 body {
 	overflow-x: hidden;
+	&::-webkit-scrollbar {
+		width: 5px;
+		background-color: #e5e5e5;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: transparent;
+
+		&:hover {
+			background-color: #b2b2b2;
+		}
+
+		&:active {
+			background-color: #b2b2b2;
+		}
+	}
 }
 
 h1,
