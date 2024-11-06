@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:44:26
- * @LastEditTime: 2024-11-05 11:37:17
+ * @LastEditTime: 2024-11-06 11:29:51
  * @LastEditors: mulingyuer
  * @Description: 首页
  * @FilePath: \chrome-extension\src\side-panel\views\home\index.vue
@@ -10,30 +10,34 @@
 <template>
 	<div class="home">
 		<div class="home-list">
-			<div v-for="item in list" :key="item.id" class="home-list-item">
-				<div class="home-list-item-head">
-					<div class="home-list-item-img-wrapper">
-						<t-image class="home-list-item-img" :src="item.img" fit="cover" shape="circle" lazy />
+			<t-row :gutter="[12, 12]">
+				<t-col v-for="item in list" :key="item.id" :xs="12" :sm="6" :lg="4">
+					<div class="home-list-item">
+						<div
+							class="home-list-item-bg"
+							:style="{ 'background-image': `url(${item.img})` }"
+						></div>
+						<div class="home-list-item-content">
+							<h2 class="home-list-item-title">{{ item.name }}</h2>
+							<p class="home-list-item-docker-image">容器镜像：{{ item.dockerImage }}</p>
+							<p class="home-list-item-description">{{ item.description }}</p>
+							<div class="home-list-item-footer">
+								<t-space :size="8">
+									<t-button variant="outline" size="medium" @click="onViewDetail(item)">
+										详情
+									</t-button>
+									<t-button theme="primary" size="medium" @click="onRunTester(item)">
+										<template #icon>
+											<PlayCircleIcon />
+										</template>
+										测试
+									</t-button>
+								</t-space>
+							</div>
+						</div>
 					</div>
-					<div class="home-list-item-info">
-						<h2 class="home-list-item-title">{{ item.name }}</h2>
-						<p class="home-list-item-docker-image">{{ item.dockerImage }}</p>
-					</div>
-				</div>
-				<div class="home-list-item-body">
-					<p class="home-list-item-description">{{ item.description }}</p>
-				</div>
-				<div class="home-list-item-footer">
-					<t-space :size="8">
-						<t-button variant="outline" shape="round" size="medium" @click="onViewDetail(item)"
-							>查看详情</t-button
-						>
-						<t-button theme="primary" shape="round" size="medium" @click="onRunTester(item)"
-							>测试运行</t-button
-						>
-					</t-space>
-				</div>
-			</div>
+				</t-col>
+			</t-row>
 		</div>
 	</div>
 </template>
@@ -42,6 +46,7 @@
 import { HomeList } from "./data";
 import type { List } from "./data";
 import { chromeMessage, EventName } from "@/utils/chrome-message";
+import { PlayCircleIcon } from "tdesign-icons-vue-next";
 
 const router = useRouter();
 
@@ -60,59 +65,67 @@ function onViewDetail(item: List[number]) {
 
 <style lang="scss" scoped>
 .home-list-item {
-	padding: 12px;
-	background-color: #fff;
-	border-radius: 8px;
-	box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.1);
-	transition: box-shadow 0.2s;
-	& + & {
-		margin-top: 12px;
+	height: 170px;
+	position: relative;
+}
+
+.home-list-item-bg {
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: right center;
+	background-size: cover;
+	background-color: #000;
+	border-radius: 12px;
+	overflow: hidden;
+	position: relative;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-image: linear-gradient(-90deg, transparent, rgba(0, 0, 0, 0.76) 40%, #000000 100%);
 	}
-	&:hover {
-		box-shadow: 0px 0px 10px 0px rgba(0, 163, 137, 0.6);
-	}
 }
-.home-list-item-head {
-	display: flex;
-	align-items: center;
-}
-.home-list-item-img-wrapper {
-	width: 70px;
-	height: 70px;
-	flex-shrink: 0;
-	margin-right: 8px;
-}
-.home-list-item-img {
+.home-list-item-content {
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
+	padding: 12px;
 }
 .home-list-item-title {
-	font-size: 18px;
+	margin-top: 12px;
+	font-size: 20px;
 	font-weight: bold;
-	color: #3d3a39;
+	color: #fff;
 	@include text-ellipsis();
 }
 .home-list-item-docker-image {
 	margin-top: 4px;
-	background-color: #f5f5f5;
-	border-radius: 9999px;
-	padding: 4px 8px;
 	font-size: 14px;
-	color: #3d3a39;
-	@include text-ellipsis();
-}
-.home-list-item-body {
-	margin-top: 15px;
+	color: rgba(255, 255, 255, 0.5);
 }
 .home-list-item-description {
+	margin-top: 10px;
 	font-size: 16px;
-	color: #3d3a39;
-	line-height: 1.2;
+	color: rgba(255, 255, 255, 0.8);
 	@include ellipsis-rows(2);
 }
 .home-list-item-footer {
-	margin-top: 12px;
-	display: flex;
-	justify-content: right;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	background-image: url("@side-panel/assets/images/home/item-footer-bg.svg");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: right bottom;
+	width: 210px;
+	height: 44px;
+	padding-top: 13px;
+	text-align: right;
 }
 </style>

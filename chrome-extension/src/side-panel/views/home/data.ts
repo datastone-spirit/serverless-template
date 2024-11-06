@@ -1,14 +1,14 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 10:51:07
- * @LastEditTime: 2024-11-05 11:40:33
+ * @LastEditTime: 2024-11-06 10:54:56
  * @LastEditors: mulingyuer
  * @Description: 本地数据
  * @FilePath: \chrome-extension\src\side-panel\views\home\data.ts
  * 怎么可能会有bug！！！
  */
-import comfyuiServerlessImg from "@side-panel/assets/images/comfyui-serverless-img.png";
-import sdxlText2imgImg from "@side-panel/assets/images/sdxlText2imgImg.png";
+import comfyuiServerlessImg from "@side-panel/assets/images/home/data/comfyui-serverless-img.png";
+import sdxlText2imgImg from "@side-panel/assets/images/home/data/sdxlText2imgImg.png";
 
 export type List = Array<{
 	id: number;
