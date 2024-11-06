@@ -10,7 +10,16 @@
 	},
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"cSpell.words": ["bumpp", "Comfyui", "mulingyuer", "persistedstate", "pinia", "tdesign"],
+	"cSpell.words": [
+		"bumpp",
+		"Comfyui",
+		"megaease",
+		"mulingyuer",
+		"persistedstate",
+		"pinia",
+		"Sdxl",
+		"tdesign"
+	],
 	"github-actions.workflows.pinned.workflows": [".github/workflows/releases.yml"],
 	"typescript.tsdk": "node_modules\\typescript\\lib"
 }

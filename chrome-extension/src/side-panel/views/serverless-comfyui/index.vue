@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-10-29 15:29:30
- * @LastEditTime: 2024-11-05 15:46:18
+ * @LastEditTime: 2024-11-06 11:56:01
  * @LastEditors: mulingyuer
  * @Description: base64图片组件
  * @FilePath: \chrome-extension\src\side-panel\views\serverless-comfyui\index.vue
@@ -192,7 +192,7 @@ function onContextMenu() {
 	chromeMessage.on(EventName.FILL_API_KEY, onFillApiKey);
 
 	/** 填充关键词 */
-	chromeMessage.on(EventName.SERVERLESS_COMFYUI_FILL_KEYWORD, onFillKeyword);
+	chromeMessage.on(EventName.FILL_POSITIVE_PROMPT, onFillKeyword);
 
 	/** 创建上下文菜单 */
 	chromeMessage.emit(EventName.CREATE_CONTEXT_MENUS, ContextMenuEnum.CREATE_SERVERLESS_COMFYUI);
@@ -202,7 +202,7 @@ function onContextMenu() {
 function offContextMenu() {
 	chromeMessage.off(EventName.FILL_SERVERLESS_ID, onFillServerlessId);
 	chromeMessage.off(EventName.FILL_API_KEY, onFillApiKey);
-	chromeMessage.off(EventName.SERVERLESS_COMFYUI_FILL_KEYWORD, onFillKeyword);
+	chromeMessage.off(EventName.FILL_POSITIVE_PROMPT, onFillKeyword);
 }
 
 /** 初始化 */

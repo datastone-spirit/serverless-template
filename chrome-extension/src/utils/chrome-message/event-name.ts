@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 11:57:42
- * @LastEditTime: 2024-11-05 11:28:13
+ * @LastEditTime: 2024-11-06 14:46:46
  * @LastEditors: mulingyuer
  * @Description: 事件名
  * @FilePath: \chrome-extension\src\utils\chrome-message\event-name.ts
@@ -19,6 +19,6 @@ export enum EventName {
 	/** 打开新页面 */
 	OPEN_NEW_PAGE = "open-new-page",
 
-	/** serverless-comfyui - 填充文生图关键字 */
-	SERVERLESS_COMFYUI_FILL_KEYWORD = "serverless-comfyui-fill-keyword"
+	/** 填充正向提示词 */
+	FILL_POSITIVE_PROMPT = "fill-positive-prompt"
 }

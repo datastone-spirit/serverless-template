@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 16:01:20
- * @LastEditTime: 2024-11-05 16:22:01
+ * @LastEditTime: 2024-11-06 11:57:12
  * @LastEditors: mulingyuer
  * @Description: sdxl-text2img
  * @FilePath: \chrome-extension\src\side-panel\views\sdxl-text2img\index.vue
@@ -158,7 +158,7 @@ function onContextMenu() {
 	chromeMessage.on(EventName.FILL_API_KEY, onFillApiKey);
 
 	/** 填充关键词 */
-	chromeMessage.on(EventName.SERVERLESS_COMFYUI_FILL_KEYWORD, onFillKeyword);
+	chromeMessage.on(EventName.FILL_POSITIVE_PROMPT, onFillKeyword);
 
 	/** 创建上下文菜单 */
 	chromeMessage.emit(EventName.CREATE_CONTEXT_MENUS, ContextMenuEnum.CREATE_SERVERLESS_COMFYUI);
@@ -168,7 +168,7 @@ function onContextMenu() {
 function offContextMenu() {
 	chromeMessage.off(EventName.FILL_SERVERLESS_ID, onFillServerlessId);
 	chromeMessage.off(EventName.FILL_API_KEY, onFillApiKey);
-	chromeMessage.off(EventName.SERVERLESS_COMFYUI_FILL_KEYWORD, onFillKeyword);
+	chromeMessage.off(EventName.FILL_POSITIVE_PROMPT, onFillKeyword);
 }
 
 /** 初始化 */

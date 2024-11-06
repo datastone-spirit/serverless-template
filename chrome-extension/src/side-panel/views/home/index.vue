@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:44:26
- * @LastEditTime: 2024-11-06 11:29:51
+ * @LastEditTime: 2024-11-06 14:45:03
  * @LastEditors: mulingyuer
  * @Description: 首页
  * @FilePath: \chrome-extension\src\side-panel\views\home\index.vue
@@ -75,8 +75,7 @@ function onViewDetail(item: List[number]) {
 	background-position: right center;
 	background-size: cover;
 	background-color: #000;
-	border-radius: 12px;
-	overflow: hidden;
+	border-radius: 8px;
 	position: relative;
 
 	&::before {
@@ -87,6 +86,7 @@ function onViewDetail(item: List[number]) {
 		width: 100%;
 		height: 100%;
 		background-image: linear-gradient(-90deg, transparent, rgba(0, 0, 0, 0.76) 40%, #000000 100%);
+		border-radius: 8px;
 	}
 }
 .home-list-item-content {
@@ -102,10 +102,10 @@ function onViewDetail(item: List[number]) {
 	font-size: 20px;
 	font-weight: bold;
 	color: #fff;
+	line-height: 1.3;
 	@include text-ellipsis();
 }
 .home-list-item-docker-image {
-	margin-top: 4px;
 	font-size: 14px;
 	color: rgba(255, 255, 255, 0.5);
 }
