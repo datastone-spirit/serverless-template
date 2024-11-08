@@ -14,12 +14,12 @@ jobs:
 
     steps:
       - name: 克隆代码
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: main # 指定主分支
 
       - name: 指定Node.js版本
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "20" # 指定 Node.js 20 版本
 
@@ -64,5 +64,3 @@ jobs:
           files: |
             ./chrome-extension.zip
             ./serverless-template.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
