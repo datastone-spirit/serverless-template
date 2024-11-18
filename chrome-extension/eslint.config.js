@@ -31,14 +31,15 @@ export default [
 				}
 			},
 			globals: {
-				...autoImport.globals
+				...AutoImport.globals
 			}
 		}
 	},
 	{
 		rules: {
 			"@typescript-eslint/no-explicit-any": "off",
-			"@typescript-eslint/no-empty-object-type": "off"
+			"@typescript-eslint/no-empty-object-type": "off",
+			"vue/multi-word-component-names": "off"
 		}
 	}
 ];
