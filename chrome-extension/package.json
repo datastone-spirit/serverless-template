@@ -18,6 +18,7 @@
 		"version:update": "bumpp --no-commit --no-tag --no-push"
 	},
 	"dependencies": {
+		"dayjs": "^1.11.13",
 		"ky": "^1.7.2",
 		"normalize.css": "^8.0.1",
 		"pinia": "^2.2.6",
