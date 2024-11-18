@@ -1,17 +1,17 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 15:22:41
- * @LastEditTime: 2024-11-01 17:42:04
+ * @LastEditTime: 2024-11-18 10:37:10
  * @LastEditors: mulingyuer
  * @Description: 上下文菜单
- * @FilePath: \serverless-api-tester\src\background\context-menus\index.ts
+ * @FilePath: \chrome-extension\src\background\context-menus\index.ts
  * 怎么可能会有bug！！！
  */
-import { chromeContextMenu } from "@/utils/chrome-context-menus.ts";
+import { chromeContextMenu } from "@/utils/chrome-context-menus";
 import { chromeMessage, EventName } from "@/utils/chrome-message";
-import { ContextMenuEnum } from "./context-menu-enum";
-import { generateMensListStrategy } from "./generate-mens-list-strategy";
-export * from "./context-menu-enum";
+import { ContextMenuEnum } from "./strategy/context-menu-enum";
+import { generateMensListStrategy } from "./strategy/generate-mens-list-strategy";
+export * from "./strategy/context-menu-enum";
 
 export class ContextMenus {
 	private isInit = false;
@@ -20,6 +20,7 @@ export class ContextMenus {
 	public init() {
 		if (this.isInit) return;
 		this.watchCreateMenus();
+		this.watchCloseMenus();
 		this.isInit = true;
 	}
 
@@ -40,6 +41,13 @@ export class ContextMenus {
 			menuList.forEach((item) => {
 				chromeContextMenu.create(item);
 			});
+		});
+	}
+
+	/** 监听关闭菜单事件 */
+	private watchCloseMenus() {
+		chromeMessage.on(EventName.CLOSE_CONTEXT_MENUS, () => {
+			chromeContextMenu.removeAll();
 		});
 	}
 }

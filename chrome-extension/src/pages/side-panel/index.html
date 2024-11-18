@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智灵Serverless API 测试工具</title>
+  <style>
+    html,
+    body {
+      background-color: #fff;
+    }
+
+    .app-first-screen-loader-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+    }
+
+    .app-first-screen-loader {
+      margin: auto;
+      height: 4px;
+      width: 130px;
+      --c: no-repeat linear-gradient(#24d3b3 0 0);
+      background: var(--c), var(--c), #c2f2e3;
+      background-size: 60% 100%;
+      animation: app-first-screen-loader-l16 3s infinite;
+    }
+
+    @keyframes app-first-screen-loader-l16 {
+      0% {
+        background-position: -150% 0, -150% 0
+      }
+
+      66% {
+        background-position: 250% 0, -150% 0
+      }
+
+      100% {
+        background-position: 250% 0, 250% 0
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="app-first-screen-loader-wrapper">
+      <div class="app-first-screen-loader"></div>
+    </div>
+  </div>
+  <script type="module" src="./main.ts"></script>
+</body>
+
+</html>

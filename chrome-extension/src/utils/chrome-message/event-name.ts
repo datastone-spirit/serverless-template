@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 11:57:42
- * @LastEditTime: 2024-11-06 14:46:46
+ * @LastEditTime: 2024-11-18 10:35:34
  * @LastEditors: mulingyuer
  * @Description: 事件名
  * @FilePath: \chrome-extension\src\utils\chrome-message\event-name.ts
@@ -16,6 +16,8 @@ export enum EventName {
 
 	/** 创建右键菜单 */
 	CREATE_CONTEXT_MENUS = "create-context-menus",
+	/** 关闭右键菜单 */
+	CLOSE_CONTEXT_MENUS = "close-context-menus",
 	/** 打开新页面 */
 	OPEN_NEW_PAGE = "open-new-page",
 

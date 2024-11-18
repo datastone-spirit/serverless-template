@@ -1,14 +1,14 @@
 <!--
  * @Author: mulingyuer
- * @Date: 2024-11-05 16:01:20
- * @LastEditTime: 2024-11-06 11:57:12
+ * @Date: 2024-10-29 15:29:30
+ * @LastEditTime: 2024-11-18 11:09:04
  * @LastEditors: mulingyuer
- * @Description: sdxl-text2img
- * @FilePath: \chrome-extension\src\side-panel\views\sdxl-text2img\index.vue
+ * @Description: base64图片组件
+ * @FilePath: \chrome-extension\src\pages\side-panel\views\serverless-comfyui\index.vue
  * 怎么可能会有bug！！！
 -->
 <template>
-	<div class="sdxl-text2img">
+	<div class="image-component">
 		<t-form
 			ref="formInstance"
 			:data="form"
@@ -20,6 +20,18 @@
 			<ServerLessID v-model="form.serverlessId" name="serverlessId" />
 			<APIKey v-model="form.apiKey" name="apiKey" />
 			<Keywords v-model="form.keywords" name="keywords" />
+			<WidthOrHeight
+				v-model:width="form.width"
+				v-model:height="form.height"
+				width-name="width"
+				height-name="height"
+			/>
+			<t-form-item label="选择模型" name="isLarge">
+				<t-radio-group v-model="form.isLarge">
+					<t-radio :value="true">SD3.5 Large</t-radio>
+					<t-radio :value="false">SD3.5 Medium</t-radio>
+				</t-radio-group>
+			</t-form-item>
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
 		<div class="result">
@@ -30,22 +42,31 @@
 </template>
 
 <script setup lang="ts">
-import type { FormInstanceFunctions, FormProps } from "tdesign-vue-next";
+import { MessagePlugin, type FormInstanceFunctions, type FormProps } from "tdesign-vue-next";
+import { request } from "@/request";
+import { useServerlessStore, useTextToImgStore } from "@side-panel/stores";
+import { chromeMessage, EventName } from "@/utils/chrome-message";
+import type { EventCallback } from "@/utils/chrome-message";
+import { ContextMenuEnum } from "@/background/context-menus";
 import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
 import APIKey from "@side-panel/components/form/APIKey.vue";
 import Keywords from "@side-panel/components/form/Keywords.vue";
+import WidthOrHeight from "@side-panel/components/form/WidthOrHeight.vue";
 import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
 import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
 import ImageResponse from "@side-panel/components/response/ImageResponse.vue";
-import { useServerlessStore, useTextToImgStore } from "@side-panel/stores";
-import { request } from "@/request";
-import { chromeMessage, EventName, type EventCallback } from "@/utils/chrome-message";
-import { ContextMenuEnum } from "@/background/context-menus";
 
 export interface Form {
 	serverlessId: string;
 	apiKey: string;
+	/** 关键词 */
 	keywords: string;
+	/** 宽度 */
+	width: number;
+	/** 高度 */
+	height: number;
+	/** 模型切换，true为sd3.5_large，false为sd3.5_medium */
+	isLarge: boolean;
 }
 
 const serverlessStore = useServerlessStore();
@@ -55,12 +76,18 @@ const formInstance = ref<FormInstanceFunctions>();
 const form = ref<Form>({
 	serverlessId: "",
 	apiKey: "",
-	keywords: ""
+	keywords: "",
+	width: 512,
+	height: 512,
+	isLarge: true
 });
 const rules: FormProps["rules"] = {
 	serverlessId: [{ required: true, message: "请填写ServerLess ID", trigger: "blur" }],
 	apiKey: [{ required: true, message: "请填写API key", trigger: "blur" }],
-	keywords: [{ required: true, message: "请填写关键词", trigger: "blur" }]
+	keywords: [{ required: true, message: "请填写关键词", trigger: "blur" }],
+	width: [{ required: true, message: "请填写宽度", trigger: "blur" }],
+	height: [{ required: true, message: "请填写高度", trigger: "blur" }],
+	isLarge: [{ required: true, message: "请选择模型", trigger: "blur" }]
 };
 const loading = ref(false);
 let requestController: AbortController | null = null;
@@ -88,7 +115,14 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 				Authorization: `Bearer ${form.value.apiKey}`
 			},
 			body: JSON.stringify({
-				input: { prompt: form.value.keywords }
+				input: {
+					prompt: JSON.stringify({
+						keywords: form.value.keywords,
+						width: form.value.width,
+						height: form.value.height,
+						isLarge: form.value.isLarge
+					})
+				}
 			})
 		});
 		const data = JSON.parse(resString) as { image: string };
@@ -169,6 +203,9 @@ function offContextMenu() {
 	chromeMessage.off(EventName.FILL_SERVERLESS_ID, onFillServerlessId);
 	chromeMessage.off(EventName.FILL_API_KEY, onFillApiKey);
 	chromeMessage.off(EventName.FILL_POSITIVE_PROMPT, onFillKeyword);
+
+	// 关闭右键菜单
+	chromeMessage.emit(EventName.CLOSE_CONTEXT_MENUS);
 }
 
 /** 初始化 */

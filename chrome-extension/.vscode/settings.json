@@ -13,12 +13,14 @@
 	"cSpell.words": [
 		"bumpp",
 		"Comfyui",
+		"crxjs",
 		"megaease",
 		"mulingyuer",
 		"persistedstate",
 		"pinia",
 		"Sdxl",
-		"tdesign"
+		"tdesign",
+		"unplugin"
 	],
 	"github-actions.workflows.pinned.workflows": [".github/workflows/releases.yml"],
 	"typescript.tsdk": "node_modules\\typescript\\lib"

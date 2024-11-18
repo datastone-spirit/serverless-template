@@ -8,7 +8,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"],
-			"@side-panel/*": ["./src/side-panel/*"]
+			"@popup/*": ["./src/pages/popup/*"],
+			"@side-panel/*": ["./src/pages/side-panel/*"]
 		},
 		"types": ["chrome"],
 		"lib": ["ES2022", "DOM", "DOM.Iterable"]

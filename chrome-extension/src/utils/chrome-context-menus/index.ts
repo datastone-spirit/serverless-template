@@ -1,12 +1,13 @@
 /*
  * @Author: mulingyuer
- * @Date: 2024-11-01 11:56:52
- * @LastEditTime: 2024-11-01 17:30:41
+ * @Date: 2024-11-15 16:33:16
+ * @LastEditTime: 2024-11-15 17:45:56
  * @LastEditors: mulingyuer
  * @Description: chrome 右键菜单
- * @FilePath: \serverless-api-tester\src\utils\chrome-context-menus.ts\index.ts
+ * @FilePath: \chrome-extension-template\src\utils\chrome-context-menus\index.ts
  * 怎么可能会有bug！！！
  */
+
 import type {
 	CreateMenuOptions,
 	MenuEventMap,

@@ -1,10 +1,10 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-10-28 16:58:06
- * @LastEditTime: 2024-11-05 16:11:54
+ * @LastEditTime: 2024-11-18 10:31:37
  * @LastEditors: mulingyuer
  * @Description: app
- * @FilePath: \chrome-extension\src\side-panel\App.vue
+ * @FilePath: \chrome-extension\src\pages\side-panel\App.vue
  * 怎么可能会有bug！！！
 -->
 <template>
@@ -23,6 +23,6 @@
 
 <style lang="scss" scoped>
 .side-panel {
-	--transition-fade-slide-duration: 0.15s;
+	--transition-fade-slide-duration: 0.2s;
 }
 </style>

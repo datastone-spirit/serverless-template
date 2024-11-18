@@ -7,8 +7,8 @@
  * @FilePath: \chrome-extension\src\background\context-menus\menus\prompt.ts
  * 怎么可能会有bug！！！
  */
-import { MenuId } from "@/utils/chrome-context-menus.ts";
-import type { CreateMenuOptions } from "@/utils/chrome-context-menus.ts";
+import { MenuId } from "@/utils/chrome-context-menus";
+import type { CreateMenuOptions } from "@/utils/chrome-context-menus";
 import { chromeMessage, EventName } from "@/utils/chrome-message";
 
 /** 正向提示词菜单 */

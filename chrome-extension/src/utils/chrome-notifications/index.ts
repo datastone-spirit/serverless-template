@@ -1,13 +1,12 @@
 /*
  * @Author: mulingyuer
- * @Date: 2024-10-30 11:16:15
- * @LastEditTime: 2024-11-05 08:49:18
+ * @Date: 2024-11-15 16:11:57
+ * @LastEditTime: 2024-11-16 13:36:26
  * @LastEditors: mulingyuer
  * @Description: 谷歌浏览器通知
- * @FilePath: \chrome-extension\src\utils\chrome-notifications\index.ts
+ * @FilePath: \chrome-extension-template\src\utils\chrome-notifications\index.ts
  * 怎么可能会有bug！！！
  */
-
 import type { ErrorNotificationOptions, WarningNotificationOptions } from "./types";
 
 export class ChromeNotifications {
@@ -25,7 +24,7 @@ export class ChromeNotifications {
 
 		chrome.notifications.create({
 			type: "basic",
-			iconUrl: "/images/icon/error.png",
+			iconUrl: "images/notifications-icon/error.png",
 			title,
 			message,
 			priority: 0
@@ -46,7 +45,7 @@ export class ChromeNotifications {
 
 		chrome.notifications.create({
 			type: "basic",
-			iconUrl: "/images/icon/warning.png",
+			iconUrl: "images/notifications-icon/warning.png",
 			title,
 			message,
 			priority: 0

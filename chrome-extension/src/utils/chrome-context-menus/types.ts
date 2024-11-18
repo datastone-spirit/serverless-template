@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
- * @Date: 2024-11-01 11:57:41
- * @LastEditTime: 2024-11-01 15:56:38
+ * @Date: 2024-11-15 16:33:16
+ * @LastEditTime: 2024-11-15 16:39:07
  * @LastEditors: mulingyuer
  * @Description: chrome 右键菜单类型
- * @FilePath: \serverless-api-tester\src\utils\chrome-context-menus.ts\types.ts
+ * @FilePath: \chrome-extension-template\src\utils\chrome-context-menus\types.ts
  * 怎么可能会有bug！！！
  */
 import { MenuId } from "./menu-id";

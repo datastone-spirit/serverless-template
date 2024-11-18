@@ -1,13 +1,12 @@
 /*
  * @Author: mulingyuer
- * @Date: 2024-10-28 16:45:58
- * @LastEditTime: 2024-10-30 16:26:09
+ * @Date: 2024-11-15 15:25:46
+ * @LastEditTime: 2024-11-15 15:25:46
  * @LastEditors: mulingyuer
  * @Description: 工具函数
- * @FilePath: \serverless-api-tester\src\utils\tools.ts
+ * @FilePath: \chrome-extension-template\src\utils\tools.ts
  * 怎么可能会有bug！！！
  */
-
 /** 写入持久化数据 */
 export async function localStorageSet(key: string, value: any) {
 	await chrome.storage.local.set({ [key]: value });

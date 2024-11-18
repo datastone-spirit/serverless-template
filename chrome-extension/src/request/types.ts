@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
- * @Date: 2024-11-04 15:08:01
- * @LastEditTime: 2024-11-05 08:57:43
+ * @Date: 2024-11-15 15:39:46
+ * @LastEditTime: 2024-11-15 15:39:46
  * @LastEditors: mulingyuer
  * @Description: 请求类型
- * @FilePath: \chrome-extension\src\request\types.ts
+ * @FilePath: \chrome-extension-template\src\request\types.ts
  * 怎么可能会有bug！！！
  */
 import type { Options } from "ky";

@@ -1,12 +1,13 @@
 /*
  * @Author: mulingyuer
- * @Date: 2024-10-31 11:40:20
- * @LastEditTime: 2024-11-04 11:12:34
+ * @Date: 2024-11-15 16:22:54
+ * @LastEditTime: 2024-11-15 16:23:00
  * @LastEditors: mulingyuer
  * @Description: 谷歌插件事件订阅
- * @FilePath: \chrome-extension\src\utils\chrome-message\index.ts
+ * @FilePath: \chrome-extension-template\src\utils\chrome-message\index.ts
  * 怎么可能会有bug！！！
  */
+
 import { EventName } from "./event-name";
 import type { EventMap, EventMessage, EventCallback } from "./types";
 export type * from "./types";

@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-01 17:05:05
- * @LastEditTime: 2024-11-05 16:22:37
+ * @LastEditTime: 2024-11-18 11:08:16
  * @LastEditors: mulingyuer
  * @Description: 定义创建不同右键菜单的枚举
- * @FilePath: \chrome-extension\src\background\context-menus\context-menu-enum.ts
+ * @FilePath: \chrome-extension\src\background\context-menus\strategy\context-menu-enum.ts
  * 怎么可能会有bug！！！
  */
 

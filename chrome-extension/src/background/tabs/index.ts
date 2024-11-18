@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 11:27:15
- * @LastEditTime: 2024-11-05 17:40:30
+ * @LastEditTime: 2024-11-20 10:11:20
  * @LastEditors: mulingyuer
  * @Description: tabs
  * @FilePath: \chrome-extension\src\background\tabs\index.ts
@@ -23,6 +23,7 @@ export class Tabs {
 	/** 监听打开新页面事件 */
 	private watchOpenNewPage() {
 		chromeMessage.on(EventName.OPEN_NEW_PAGE, (message) => {
+			console.log("🚀 ~ Tabs ~ chromeMessage.on ~ message:", message);
 			const { data } = message;
 			if (typeof data !== "string" || data.trim() === "") return;
 
@@ -30,7 +31,7 @@ export class Tabs {
 			if (data.startsWith("data:image/")) {
 				chrome.storage.local.set({ Base64ImgData: data }, () => {
 					chrome.tabs.create({
-						url: chrome.runtime.getURL("pages/image-preview/index.html")
+						url: chrome.runtime.getURL("src/pages/image-preview/index.html")
 					});
 				});
 			} else {
