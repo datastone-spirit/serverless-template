@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-15 15:39:36
- * @LastEditTime: 2024-11-20 10:13:14
+ * @LastEditTime: 2024-11-20 10:15:14
  * @LastEditors: mulingyuer
  * @Description: 请求封装
  * @FilePath: \chrome-extension\src\request\index.ts
@@ -16,7 +16,7 @@ import type {
 	RequestOptions,
 	TextOptions
 } from "./types";
-import { MessagePlugin } from "tdesign-vue-next";
+import { MessagePlugin, NotifyPlugin } from "tdesign-vue-next";
 
 /** ky 实例 */
 const kyInstance = ky.create({
@@ -41,7 +41,10 @@ export async function request(options: RequestOptions): Promise<unknown> {
 				// 取消请求
 				MessagePlugin.info("请求已取消");
 			} else {
-				console.error((error as Error)?.message ?? "请求失败");
+				NotifyPlugin.error({
+					title: "请求失败",
+					content: (error as Error)?.message ?? "未知错误"
+				});
 			}
 		}
 

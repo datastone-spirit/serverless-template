@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-15 16:33:16
- * @LastEditTime: 2024-11-15 17:45:56
+ * @LastEditTime: 2024-11-18 15:54:39
  * @LastEditors: mulingyuer
  * @Description: chrome 右键菜单
- * @FilePath: \chrome-extension-template\src\utils\chrome-context-menus\index.ts
+ * @FilePath: \chrome-extension\src\utils\chrome-context-menus\index.ts
  * 怎么可能会有bug！！！
  */
 
@@ -17,10 +17,8 @@ import type {
 	RemoveAllMenusOptions,
 	UpdateMenuOptions
 } from "./types";
-import { MenuId } from "./menu-id";
 import { ChromeNotifications } from "@/utils/chrome-notifications";
 export * from "./types";
-export * from "./menu-id";
 
 class ChromeContextMenu {
 	private menuEventMap: MenuEventMap = new Map();
@@ -84,7 +82,7 @@ class ChromeContextMenu {
 	}
 
 	/** 注册右键菜单点击事件 */
-	private on(id: MenuId, callback: MenuClickedCallback) {
+	private on(id: string, callback: MenuClickedCallback) {
 		let fnList = this.menuEventMap.get(id);
 		if (!fnList) {
 			fnList = [];
@@ -95,7 +93,7 @@ class ChromeContextMenu {
 	}
 
 	/** 触发右键菜单点击事件 */
-	public emit(id: MenuId, ...args: MenuClickedCallbackArgs) {
+	public emit(id: string, ...args: MenuClickedCallbackArgs) {
 		const fnList = this.menuEventMap.get(id);
 		if (fnList) {
 			fnList.forEach((fn) => fn(...args));
@@ -103,7 +101,7 @@ class ChromeContextMenu {
 	}
 
 	/** 移除右键菜单点击事件 */
-	public off(id: MenuId, callback: MenuClickedCallback) {
+	public off(id: string, callback: MenuClickedCallback) {
 		const fnList = this.menuEventMap.get(id);
 		if (!fnList) return;
 		const findIndex = fnList.findIndex((fn) => fn === callback);
@@ -115,7 +113,7 @@ class ChromeContextMenu {
 	/** 监听chrome右键菜单点击事件 */
 	private watchContextMenuClicked() {
 		chrome.contextMenus.onClicked.addListener((info, tab) => {
-			const menuItemId = info.menuItemId as MenuId;
+			const menuItemId = info.menuItemId as string;
 
 			const fnList = this.menuEventMap.get(menuItemId);
 			if (!fnList) return;

@@ -1,14 +1,14 @@
 <!--
  * @Author: mulingyuer
- * @Date: 2024-11-05 16:01:20
- * @LastEditTime: 2024-11-18 16:20:55
+ * @Date: 2024-11-18 11:35:13
+ * @LastEditTime: 2024-11-18 16:18:38
  * @LastEditors: mulingyuer
- * @Description: sdxl-text2img
- * @FilePath: \chrome-extension\src\pages\side-panel\views\sdxl-text2img\index.vue
+ * @Description: ollama-OCR
+ * @FilePath: \chrome-extension\src\pages\side-panel\views\ollama-ocr\index.vue
  * 怎么可能会有bug！！！
 -->
 <template>
-	<div class="sdxl-text2img">
+	<div class="ollama-ocr">
 		<t-form
 			ref="formInstance"
 			:data="form"
@@ -19,54 +19,43 @@
 		>
 			<ServerLessID ref="serverLessIDRef" v-model="form.serverlessId" name="serverlessId" />
 			<APIKey ref="apiKeyRef" v-model="form.apiKey" name="apiKey" />
-			<PositivePrompt ref="positivePromptRef" v-model="form.keywords" name="keywords" />
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
 		<div class="result">
-			<ImageResponse v-if="isImg" :src="imgSrc" />
-			<JsonResponse v-else :json="otherData" />
+			<JsonResponse :json="ocrData" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import PositivePrompt from "@/pages/side-panel/components/form/PositivePrompt.vue";
-import { request } from "@/request";
 import APIKey from "@side-panel/components/form/APIKey.vue";
 import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
 import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
-import ImageResponse from "@side-panel/components/response/ImageResponse.vue";
 import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
-import { useServerlessStore } from "@side-panel/stores";
 import { type FormInstanceFunctions, type FormProps } from "tdesign-vue-next";
 
 export interface Form {
 	serverlessId: string;
 	apiKey: string;
-	keywords: string;
+	img: File | null;
 }
-
-const serverlessStore = useServerlessStore();
 
 const formInstance = ref<FormInstanceFunctions>();
 const form = ref<Form>({
 	serverlessId: "",
 	apiKey: "",
-	keywords: ""
+	img: null
 });
 const rules: FormProps["rules"] = {
 	serverlessId: [{ required: true, message: "请填写ServerLess ID", trigger: "blur" }],
 	apiKey: [{ required: true, message: "请填写API key", trigger: "blur" }],
-	keywords: [{ required: true, message: "请填写关键词", trigger: "blur" }]
+	img: [{ required: true, message: "请上传图片", trigger: "change" }]
 };
 const loading = ref(false);
 let requestController: AbortController | null = null;
-const isImg = ref(true);
-const imgSrc = ref("");
-const otherData = ref("");
+const ocrData = ref<string>("");
 const serverLessIDRef = ref<InstanceType<typeof ServerLessID>>();
 const apiKeyRef = ref<InstanceType<typeof APIKey>>();
-const positivePromptRef = ref<InstanceType<typeof PositivePrompt>>();
 
 /** 提交 */
 const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
@@ -74,32 +63,25 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		if (validateResult !== true) return;
 		loading.value = true;
 		// 缓存数据
+		console.log(form.value);
 		await saveForm();
 		requestController = new AbortController();
 		// api请求
-		const resString = await request<string>({
-			url: `${form.value.serverlessId}/sync`,
-			method: "post",
-			responseType: "json",
-			signal: requestController.signal,
-			prefixUrl: serverlessStore.baseUrl,
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${form.value.apiKey}`
-			},
-			body: JSON.stringify({
-				input: { prompt: form.value.keywords }
-			})
-		});
-		const data = JSON.parse(resString) as { image: string };
-
-		if (Object.hasOwn(data, "image")) {
-			isImg.value = true;
-			imgSrc.value = `data:image/png;base64, ${data.image}`;
-		} else {
-			isImg.value = false;
-			otherData.value = typeof resString === "string" ? resString : JSON.stringify(resString);
-		}
+		// const resString = await request<string>({
+		// 	url: `${form.value.serverlessId}/sync`,
+		// 	method: "post",
+		// 	responseType: "json",
+		// 	signal: requestController.signal,
+		// 	prefixUrl: serverlessStore.baseUrl,
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 		Authorization: `Bearer ${form.value.apiKey}`
+		// 	}
+		// 	// body: JSON.stringify({
+		// 	// 	input: { prompt: form.value.keywords }
+		// 	// })
+		// });
+		// const data = JSON.parse(resString) as { image: string };
 
 		loading.value = false;
 	} catch (_error) {
@@ -118,7 +100,6 @@ function onCancel() {
 function saveForm() {
 	serverLessIDRef.value?.saveData();
 	apiKeyRef.value?.saveData();
-	positivePromptRef.value?.saveData();
 }
 </script>
 

@@ -1,13 +1,12 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-15 16:33:16
- * @LastEditTime: 2024-11-15 16:39:07
+ * @LastEditTime: 2024-11-18 15:52:13
  * @LastEditors: mulingyuer
  * @Description: chrome 右键菜单类型
- * @FilePath: \chrome-extension-template\src\utils\chrome-context-menus\types.ts
+ * @FilePath: \chrome-extension\src\utils\chrome-context-menus\types.ts
  * 怎么可能会有bug！！！
  */
-import { MenuId } from "./menu-id";
 
 /** 菜单点击的事件回调 */
 export type MenuClickedCallback = Parameters<typeof chrome.contextMenus.onClicked.addListener>[0];
@@ -16,13 +15,13 @@ export type MenuClickedCallbackArgs = Parameters<MenuClickedCallback>;
 
 /** 菜单配置 */
 export type MenuProperties = chrome.contextMenus.CreateProperties & {
-	id: MenuId;
+	id: string;
 	// NOTE: 修复update和create方法这个参数的类型定义不一致的问题
 	contexts?: chrome.contextMenus.ContextType[];
 };
 
 /** 菜单事件map */
-export type MenuEventMap = Map<MenuId, MenuClickedCallback[]>;
+export type MenuEventMap = Map<string, MenuClickedCallback[]>;
 
 /** 创建菜单配置 */
 export interface CreateMenuOptions {
@@ -37,7 +36,7 @@ export interface CreateMenuOptions {
 /** 更新右键菜单配置 */
 export interface UpdateMenuOptions {
 	/** 菜单id */
-	id: MenuId;
+	id: string;
 	/** 菜单配置 */
 	updateProperties: chrome.contextMenus.UpdateProperties;
 	/** 更新菜单的回调：失败、成功都会触发 */
@@ -47,7 +46,7 @@ export interface UpdateMenuOptions {
 /** 移除右键菜单配置 */
 export interface RemoveMenuOptions {
 	/** 菜单id */
-	id: MenuId;
+	id: string;
 	/** 移除菜单的回调：失败、成功都会触发 */
 	callback?: () => void;
 }

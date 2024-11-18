@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-10-29 15:29:30
- * @LastEditTime: 2024-11-18 11:09:04
+ * @LastEditTime: 2024-11-18 16:19:38
  * @LastEditors: mulingyuer
  * @Description: base64图片组件
  * @FilePath: \chrome-extension\src\pages\side-panel\views\serverless-comfyui\index.vue
@@ -17,9 +17,9 @@
 			colon
 			@submit="onSubmit"
 		>
-			<ServerLessID v-model="form.serverlessId" name="serverlessId" />
-			<APIKey v-model="form.apiKey" name="apiKey" />
-			<Keywords v-model="form.keywords" name="keywords" />
+			<ServerLessID ref="serverLessIDRef" v-model="form.serverlessId" name="serverlessId" />
+			<APIKey ref="apiKeyRef" v-model="form.apiKey" name="apiKey" />
+			<PositivePrompt ref="positivePromptRef" v-model="form.keywords" name="keywords" />
 			<WidthOrHeight
 				v-model:width="form.width"
 				v-model:height="form.height"
@@ -42,19 +42,16 @@
 </template>
 
 <script setup lang="ts">
-import { MessagePlugin, type FormInstanceFunctions, type FormProps } from "tdesign-vue-next";
+import PositivePrompt from "@/pages/side-panel/components/form/PositivePrompt.vue";
 import { request } from "@/request";
-import { useServerlessStore, useTextToImgStore } from "@side-panel/stores";
-import { chromeMessage, EventName } from "@/utils/chrome-message";
-import type { EventCallback } from "@/utils/chrome-message";
-import { ContextMenuEnum } from "@/background/context-menus";
-import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
 import APIKey from "@side-panel/components/form/APIKey.vue";
-import Keywords from "@side-panel/components/form/Keywords.vue";
-import WidthOrHeight from "@side-panel/components/form/WidthOrHeight.vue";
+import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
 import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
-import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
+import WidthOrHeight from "@side-panel/components/form/WidthOrHeight.vue";
 import ImageResponse from "@side-panel/components/response/ImageResponse.vue";
+import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
+import { useServerlessStore } from "@side-panel/stores";
+import { type FormInstanceFunctions, type FormProps } from "tdesign-vue-next";
 
 export interface Form {
 	serverlessId: string;
@@ -70,7 +67,6 @@ export interface Form {
 }
 
 const serverlessStore = useServerlessStore();
-const textToImgStore = useTextToImgStore();
 
 const formInstance = ref<FormInstanceFunctions>();
 const form = ref<Form>({
@@ -94,6 +90,9 @@ let requestController: AbortController | null = null;
 const isImg = ref(true);
 const imgSrc = ref("");
 const otherData = ref("");
+const serverLessIDRef = ref<InstanceType<typeof ServerLessID>>();
+const apiKeyRef = ref<InstanceType<typeof APIKey>>();
+const positivePromptRef = ref<InstanceType<typeof PositivePrompt>>();
 
 /** 提交 */
 const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
@@ -148,83 +147,12 @@ function onCancel() {
 	requestController = null;
 }
 
-/** 初始化表单 */
-function initForm() {
-	form.value.serverlessId = serverlessStore.serverlessId;
-	form.value.apiKey = serverlessStore.apiKey;
-	form.value.keywords = textToImgStore.keyword;
-}
-
 /** 存储缓存数据 */
 function saveForm() {
-	serverlessStore.setServerlessId(form.value.serverlessId);
-	serverlessStore.setApiKey(form.value.apiKey);
-	textToImgStore.setKeyword(form.value.keywords);
+	serverLessIDRef.value?.saveData();
+	apiKeyRef.value?.saveData();
+	positivePromptRef.value?.saveData();
 }
-
-/** 填充Serverless ID回调 */
-const onFillServerlessId: EventCallback = (message) => {
-	const { data } = message;
-	if (!data) return;
-	form.value.serverlessId = data;
-};
-
-/** 填充API key回调 */
-const onFillApiKey: EventCallback = (message) => {
-	const { data } = message;
-	if (!data) return;
-	form.value.apiKey = data;
-};
-
-/** 填充关键词回调 */
-const onFillKeyword: EventCallback = (message) => {
-	const { data } = message;
-	if (!data) return;
-	form.value.keywords = data;
-};
-
-/** 监听上下文菜单事件 */
-function onContextMenu() {
-	/** 填充Serverless ID */
-	chromeMessage.on(EventName.FILL_SERVERLESS_ID, onFillServerlessId);
-
-	/** 填充API key */
-	chromeMessage.on(EventName.FILL_API_KEY, onFillApiKey);
-
-	/** 填充关键词 */
-	chromeMessage.on(EventName.FILL_POSITIVE_PROMPT, onFillKeyword);
-
-	/** 创建上下文菜单 */
-	chromeMessage.emit(EventName.CREATE_CONTEXT_MENUS, ContextMenuEnum.CREATE_SERVERLESS_COMFYUI);
-}
-
-/** 解除监听上下文菜单事件 */
-function offContextMenu() {
-	chromeMessage.off(EventName.FILL_SERVERLESS_ID, onFillServerlessId);
-	chromeMessage.off(EventName.FILL_API_KEY, onFillApiKey);
-	chromeMessage.off(EventName.FILL_POSITIVE_PROMPT, onFillKeyword);
-
-	// 关闭右键菜单
-	chromeMessage.emit(EventName.CLOSE_CONTEXT_MENUS);
-}
-
-/** 初始化 */
-async function init() {
-	try {
-		await initForm();
-	} catch (error) {
-		MessagePlugin.error((error as Error)?.message);
-	}
-}
-
-onMounted(() => {
-	init();
-	onContextMenu();
-});
-
-onUnmounted(() => {
-	offContextMenu();
-});
 </script>
 
 <style lang="scss" scoped>

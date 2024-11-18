@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 11:27:15
- * @LastEditTime: 2024-11-20 10:11:20
+ * @LastEditTime: 2024-11-20 10:14:53
  * @LastEditors: mulingyuer
  * @Description: tabs
  * @FilePath: \chrome-extension\src\background\tabs\index.ts
@@ -23,7 +23,6 @@ export class Tabs {
 	/** 监听打开新页面事件 */
 	private watchOpenNewPage() {
 		chromeMessage.on(EventName.OPEN_NEW_PAGE, (message) => {
-			console.log("🚀 ~ Tabs ~ chromeMessage.on ~ message:", message);
 			const { data } = message;
 			if (typeof data !== "string" || data.trim() === "") return;
 

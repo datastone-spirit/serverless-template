@@ -1,10 +1,10 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:42:57
- * @LastEditTime: 2024-11-05 16:02:14
+ * @LastEditTime: 2024-11-18 11:36:05
  * @LastEditors: mulingyuer
  * @Description: 路由
- * @FilePath: \chrome-extension\src\side-panel\router\routes.ts
+ * @FilePath: \chrome-extension\src\pages\side-panel\router\routes.ts
  * 怎么可能会有bug！！！
  */
 import type { RouteRecordRaw } from "vue-router";
@@ -36,6 +36,11 @@ export const routes: RouteRecordRaw[] = [
 				path: "/serverless/sdxl-text2img",
 				name: "ServerlessSDXLText2Img",
 				component: () => import("@side-panel/views/sdxl-text2img/index.vue")
+			},
+			{
+				path: "/serverless/ollama-ocr",
+				name: "ServerlessOllamaOCR",
+				component: () => import("@side-panel/views/ollama-ocr/index.vue")
 			}
 		]
 	}

@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 11:57:42
- * @LastEditTime: 2024-11-18 10:35:34
+ * @LastEditTime: 2024-11-18 16:02:28
  * @LastEditors: mulingyuer
  * @Description: 事件名
  * @FilePath: \chrome-extension\src\utils\chrome-message\event-name.ts
@@ -9,18 +9,30 @@
  */
 
 export enum EventName {
+	/** 关闭所有菜单 */
+	CLOSE_ALL_MENUS = "close-all-menus",
+
 	/** 填充Serverless ID */
 	FILL_SERVERLESS_ID = "fill-serverless-id",
+	/** 创建Serverless ID菜单 */
+	CREATE_SERVERLESS_ID_MENU = "create-serverless-id-menu",
+	/** 关闭Serverless ID菜单 */
+	CLOSE_SERVERLESS_ID_MENU = "close-serverless-id-menu",
+
 	/** 填充api key */
 	FILL_API_KEY = "fill-api-key",
-
-	/** 创建右键菜单 */
-	CREATE_CONTEXT_MENUS = "create-context-menus",
-	/** 关闭右键菜单 */
-	CLOSE_CONTEXT_MENUS = "close-context-menus",
-	/** 打开新页面 */
-	OPEN_NEW_PAGE = "open-new-page",
+	/** 创建api key菜单 */
+	CREATE_API_KEY_MENU = "create-api-key-menu",
+	/** 关闭api key菜单 */
+	CLOSE_API_KEY_MENU = "close-api-key-menu",
 
 	/** 填充正向提示词 */
-	FILL_POSITIVE_PROMPT = "fill-positive-prompt"
+	FILL_POSITIVE_PROMPT = "fill-positive-prompt",
+	/** 创建正向提示词菜单 */
+	CREATE_POSITIVE_PROMPT_MENU = "create-positive-prompt-menu",
+	/** 关闭正向提示词菜单 */
+	CLOSE_POSITIVE_PROMPT_MENU = "close-positive-prompt-menu",
+
+	/** 打开新页面 */
+	OPEN_NEW_PAGE = "open-new-page"
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 15:22:41
- * @LastEditTime: 2024-11-18 10:37:10
+ * @LastEditTime: 2024-11-18 16:02:35
  * @LastEditors: mulingyuer
  * @Description: 上下文菜单
  * @FilePath: \chrome-extension\src\background\context-menus\index.ts
@@ -9,9 +9,7 @@
  */
 import { chromeContextMenu } from "@/utils/chrome-context-menus";
 import { chromeMessage, EventName } from "@/utils/chrome-message";
-import { ContextMenuEnum } from "./strategy/context-menu-enum";
-import { generateMensListStrategy } from "./strategy/generate-mens-list-strategy";
-export * from "./strategy/context-menu-enum";
+import { ServerlessIdMenu, ApiKeyMenu, PositivePromptMenu } from "./menus";
 
 export class ContextMenus {
 	private isInit = false;
@@ -19,35 +17,42 @@ export class ContextMenus {
 	/** 初始化 */
 	public init() {
 		if (this.isInit) return;
-		this.watchCreateMenus();
-		this.watchCloseMenus();
+		this.listenEvents();
 		this.isInit = true;
 	}
 
-	/** 监听创建菜单事件 */
-	private watchCreateMenus() {
-		chromeMessage.on(EventName.CREATE_CONTEXT_MENUS, (message) => {
-			const data = message.data as ContextMenuEnum;
-			if (!data) return;
-
-			const strategy = generateMensListStrategy[data];
-			if (typeof strategy !== "function") return;
-
-			// 清除之前的菜单
+	/** 监听事件 */
+	private listenEvents() {
+		/** 关闭所有菜单 */
+		chromeMessage.on(EventName.CLOSE_ALL_MENUS, () => {
 			chromeContextMenu.removeAll();
-
-			// 从策略中取得菜单列表数据并创建菜单
-			const menuList = strategy();
-			menuList.forEach((item) => {
-				chromeContextMenu.create(item);
-			});
 		});
-	}
 
-	/** 监听关闭菜单事件 */
-	private watchCloseMenus() {
-		chromeMessage.on(EventName.CLOSE_CONTEXT_MENUS, () => {
-			chromeContextMenu.removeAll();
+		/** 创建Serverless ID菜单 */
+		chromeMessage.on(EventName.CREATE_SERVERLESS_ID_MENU, () => {
+			chromeContextMenu.create(ServerlessIdMenu);
+		});
+		/** 关闭Serverless ID菜单 */
+		chromeMessage.on(EventName.CLOSE_SERVERLESS_ID_MENU, () => {
+			chromeContextMenu.remove({ id: ServerlessIdMenu.menuProperties.id });
+		});
+
+		/** 创建api key菜单 */
+		chromeMessage.on(EventName.CREATE_API_KEY_MENU, () => {
+			chromeContextMenu.create(ApiKeyMenu);
+		});
+		/** 关闭api key菜单 */
+		chromeMessage.on(EventName.CLOSE_API_KEY_MENU, () => {
+			chromeContextMenu.remove({ id: ApiKeyMenu.menuProperties.id });
+		});
+
+		/** 创建正向提示词菜单 */
+		chromeMessage.on(EventName.CREATE_POSITIVE_PROMPT_MENU, () => {
+			chromeContextMenu.create(PositivePromptMenu);
+		});
+		/** 关闭正向提示词菜单 */
+		chromeMessage.on(EventName.CLOSE_POSITIVE_PROMPT_MENU, () => {
+			chromeContextMenu.remove({ id: PositivePromptMenu.menuProperties.id });
 		});
 	}
 }
