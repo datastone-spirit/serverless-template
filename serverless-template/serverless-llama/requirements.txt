@@ -1,0 +1,10 @@
+nats-py >= 2.7.2
+requests == 2.31.0
+PyYAML >= 6.0.1
+backoff == 2.2.1
+aiohttp == 3.10.10
+pydantic == 2.5.2
+minio == 7.2.7
+pillow == 10.4.0
+spirit-gpu >= 0.0.1
+yarl == 1.17.0

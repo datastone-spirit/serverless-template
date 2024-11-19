@@ -13,6 +13,7 @@
 			:default-value="json"
 			:placeholder="placeholder"
 			:autosize="{ minRows, maxRows }"
+			:value="json"
 			readonly
 		/>
 	</div>

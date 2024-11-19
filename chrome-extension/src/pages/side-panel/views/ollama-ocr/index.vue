@@ -19,6 +19,16 @@
 		>
 			<ServerLessID ref="serverLessIDRef" v-model="form.serverlessId" name="serverlessId" />
 			<APIKey ref="apiKeyRef" v-model="form.apiKey" name="apiKey" />
+			<t-form-item label="返回文案说明" name="image_content">
+				<t-textarea
+					v-model="form.image_content"
+					placeholder="请输入需要返回的说明"
+					:autosize="{ minRows: 3, maxRows: 5 }"
+				/>
+			</t-form-item>
+			<t-form-item label="role" name="role">
+				<t-input v-model="form.role" placeholder="role值" />
+			</t-form-item>
 			<ImageUpload v-model="form.img" name="img" />
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
@@ -43,6 +53,8 @@ export interface Form {
 	serverlessId: string;
 	apiKey: string;
 	img: UploadProps["value"];
+	image_content: string;
+	role: string;
 }
 
 const serverlessStore = useServerlessStore();
@@ -51,7 +63,9 @@ const formInstance = ref<FormInstanceFunctions>();
 const form = ref<Form>({
 	serverlessId: "",
 	apiKey: "",
-	img: []
+	image_content: "",
+	img: [],
+	role: "user"
 });
 const rules: FormProps["rules"] = {
 	serverlessId: [{ required: true, message: "请填写ServerLess ID", trigger: "blur" }],
@@ -83,10 +97,17 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${form.value.apiKey}`
 			},
-			body: await fileToBase64(form.value.img![0].raw!)
+			body: JSON.stringify({
+				input: {
+					image_base64: await fileToBase64(form.value.img![0].raw!),
+					image_content: form.value.image_content,
+					role: form.value.role
+				}
+			})
 		});
 
 		console.log("🚀 ~ constonSubmit:FormProps['onSubmit']= ~ resString:", resString);
+		ocrData.value = resString.data.message.content;
 		// const data = JSON.parse(resString) as { image: string };
 
 		loading.value = false;
