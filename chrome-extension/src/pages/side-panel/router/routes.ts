@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:42:57
- * @LastEditTime: 2024-11-18 11:36:05
+ * @LastEditTime: 2024-11-19 09:18:20
  * @LastEditors: mulingyuer
  * @Description: 路由
  * @FilePath: \chrome-extension\src\pages\side-panel\router\routes.ts
@@ -41,6 +41,11 @@ export const routes: RouteRecordRaw[] = [
 				path: "/serverless/ollama-ocr",
 				name: "ServerlessOllamaOCR",
 				component: () => import("@side-panel/views/ollama-ocr/index.vue")
+			},
+			{
+				path: "/serverless/cosyvoice",
+				name: "ServerlessCosyvoice",
+				component: () => import("@side-panel/views/cosyvoice/index.vue")
 			}
 		]
 	}

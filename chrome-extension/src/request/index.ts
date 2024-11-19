@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-15 15:39:36
- * @LastEditTime: 2024-11-20 10:15:14
+ * @LastEditTime: 2024-11-20 10:16:14
  * @LastEditors: mulingyuer
  * @Description: 请求封装
  * @FilePath: \chrome-extension\src\request\index.ts
@@ -20,7 +20,7 @@ import { MessagePlugin, NotifyPlugin } from "tdesign-vue-next";
 
 /** ky 实例 */
 const kyInstance = ky.create({
-	timeout: 3000000 // 单位ms, 30s
+	timeout: 3000000 // 单位ms, 90s
 });
 
 export function request<T>(op: JSONOptions): Promise<T>;

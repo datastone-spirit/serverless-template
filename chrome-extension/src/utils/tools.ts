@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-15 15:25:46
- * @LastEditTime: 2024-11-18 17:38:08
+ * @LastEditTime: 2024-11-19 11:48:52
  * @LastEditors: mulingyuer
  * @Description: 工具函数
  * @FilePath: \chrome-extension\src\utils\tools.ts
@@ -24,6 +24,7 @@ export async function localStorageGet(key: string, defaultValue: any) {
 
 /** 将一个file对象转化为base64字符串 */
 export function fileToBase64(file: File) {
+	console.log("🚀 ~ fileToBase64 ~ file:", file);
 	return new Promise<string>((resolve, reject) => {
 		const reader = new FileReader();
 
@@ -38,4 +39,14 @@ export function fileToBase64(file: File) {
 
 		reader.readAsDataURL(file);
 	});
+}
+
+/** 下载base64字符串的文件 */
+export function downloadBase64File(base64: string, fileName: string) {
+	const link = document.createElement("a");
+	link.href = base64;
+	link.download = fileName;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
 }

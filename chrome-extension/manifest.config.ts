@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-11 11:58:04
- * @LastEditTime: 2024-11-18 11:15:06
+ * @LastEditTime: 2024-11-19 11:47:48
  * @LastEditors: mulingyuer
  * @Description: manifest 配置文件
  * @FilePath: \chrome-extension\manifest.config.ts
@@ -31,7 +31,8 @@ export default defineManifest(async (env) => {
 			"contextMenus",
 			"activeTab",
 			"tabs",
-			"scripting"
+			"scripting",
+			"downloads"
 		],
 		background: {
 			service_worker: "src/background/background.ts",
