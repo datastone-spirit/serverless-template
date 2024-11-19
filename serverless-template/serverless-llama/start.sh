@@ -15,8 +15,5 @@ ollama serve &
 # 等待服务启动（可以调整睡眠时间）
 sleep 10
 
-# 启动 llama3.2-vision 模型
-#ollama run llama3.2-vision
-
 # 启动 ollama serverless 的入口脚本
 exec /spirit/ollama/venv/bin/python -u /spirit/ollama_serverless/main.py

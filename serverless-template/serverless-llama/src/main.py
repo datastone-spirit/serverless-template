@@ -1,14 +1,9 @@
-import os
 import logging
 from typing import Any, Dict
 from spirit_gpu import start, Env
 import json
 import base64
-import tempfile
-import torchaudio
-import torch
 import ollama
-import requests
 
 def config_logging():
     console = logging.StreamHandler()
@@ -23,40 +18,28 @@ def start_handler():
     
     def handler(request: Dict[str, Any], _: Env):
         request_input = request.get("input", {})
+        image_base64 = request_input.get('image_base64', '')
+        image_content = request_input.get('image_content', '')
+        role = request_input.get('role', 'user')
 
-        response_image = requests.get('https://img2.baidu.com/it/u=2241193265,2791755422&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=1082')
-        logging.info(f"1111111: {response_image}")
-        if response_image.status_code == 200:
-            image_bytes = response_image.content  # 获取图片的字节内容
+        if "," in image_base64:
+            base64_data = image_base64.split(",")[1]
         else:
-            raise Exception(f"Failed to download image from. Status code: {response.status_code}")
+            base64_data = image_base64  # 如果没有前缀，直接使用原数据
+
+        image_bytes = base64.b64decode(base64_data)
 
         response_ollama = ollama.chat(
             model='llama3.2-vision',
             messages=[{
-                'role': 'user',
-                'content': 'Extract all text from this image, including handwritten and printed text.',
+                'role': role,
+                'content': image_content,
                 'images': [image_bytes]
             }]
         )
 
-        logging.info(f"Received request with prompt: {response_ollama}")
+        # logging.info(f"Received request with prompt: {response_ollama}")
 
-        # 获取并解析 Base64 编码的音频和文本
-        prompt = json.loads(request_input.get("prompt"))
-        # 音频base64
-        base64_audio = prompt.get("audio_base64")
-        # 需生成文案语音
-        output_text = prompt.get("output_text")
-        # 原音频文案
-        origin_audio_text = prompt.get("origin_audio_text")
-
-        # 实例化ComfyUIClient
-        
-        logging.info(f"Received request with prompt: {prompt}")
-
-
-        # 构造响应
         response = {
             "data": response_ollama
         }
