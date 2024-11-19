@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-18 17:08:36
- * @LastEditTime: 2024-11-19 10:11:32
+ * @LastEditTime: 2024-11-19 17:45:35
  * @LastEditors: mulingyuer
  * @Description: 图片上传组件
  * @FilePath: \chrome-extension\src\pages\side-panel\components\form\ImageUpload.vue
@@ -10,10 +10,12 @@
 <template>
 	<t-form-item :label="label" :name="name">
 		<t-upload
+			class="image-upload"
+			ref="uploadRef"
 			v-model="img"
 			theme="image"
 			accept="image/*"
-			:multiple="multiple"
+			:show-thumbnail="true"
 			:placeholder="placeholder"
 			:draggable="draggable"
 			:request-method="requestMethod"
@@ -23,8 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import type { UploadProps } from "tdesign-vue-next";
-import dayjs from "@/utils/dayjs";
+import type { UploadFile, UploadInstanceFunctions, UploadProps } from "tdesign-vue-next";
+import { fileToBlobUrl, releaseBlobUrl } from "@/utils/tools";
 
 defineProps({
 	label: {
@@ -38,11 +40,6 @@ defineProps({
 		type: String,
 		default: "点击上传图片"
 	},
-	/** 多文件上传 */
-	multiple: {
-		type: Boolean,
-		default: false
-	},
 	/** 拖拽 */
 	draggable: {
 		type: Boolean,
@@ -51,15 +48,32 @@ defineProps({
 });
 
 const img = defineModel({ type: Array as PropType<UploadProps["value"]>, required: true });
+const uploadRef = ref<UploadInstanceFunctions>();
+let oldImgSrc: string | null = null;
+function clearOldImgSrc() {
+	if (!oldImgSrc) return;
+	releaseBlobUrl(oldImgSrc);
+	oldImgSrc = null;
+}
 
-const requestMethod: UploadProps["requestMethod"] = async (files) => {
+const requestMethod: UploadProps["requestMethod"] = async (file: UploadFile) => {
+	// 生成预览图
+	clearOldImgSrc();
+	oldImgSrc = fileToBlobUrl(file.raw!);
+
 	return {
 		status: "success",
 		response: {
-			files: Array.isArray(files) ? files : [{ ...files, uploadTime: dayjs().format("YYYY-MM-DD") }]
+			url: oldImgSrc
 		}
 	};
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.image-upload {
+	:deep(.t-image__loading) {
+		display: none;
+	}
+}
+</style>

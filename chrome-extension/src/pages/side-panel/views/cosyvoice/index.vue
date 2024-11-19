@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-19 09:15:37
- * @LastEditTime: 2024-11-19 11:46:47
+ * @LastEditTime: 2024-11-19 15:40:18
  * @LastEditors: mulingyuer
  * @Description: cosyvoice
  * @FilePath: \chrome-extension\src\pages\side-panel\views\cosyvoice\index.vue
@@ -89,7 +89,6 @@ const audioSrc = ref("");
 
 /** 提交 */
 const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
-	console.log(await fileToBase64(form.value.audio![0].raw!));
 	try {
 		if (validateResult !== true) return;
 		audioSrc.value = "";

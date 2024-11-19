@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-18 11:35:13
- * @LastEditTime: 2024-11-18 17:46:31
+ * @LastEditTime: 2024-11-19 17:17:06
  * @LastEditors: mulingyuer
  * @Description: ollama-OCR
  * @FilePath: \chrome-extension\src\pages\side-panel\views\ollama-ocr\index.vue
@@ -19,16 +19,31 @@
 		>
 			<ServerLessID ref="serverLessIDRef" v-model="form.serverlessId" name="serverlessId" />
 			<APIKey ref="apiKeyRef" v-model="form.apiKey" name="apiKey" />
-			<t-form-item label="返回文案说明" name="image_content">
-				<t-textarea
-					v-model="form.image_content"
-					placeholder="请输入需要返回的说明"
-					:autosize="{ minRows: 3, maxRows: 5 }"
-				/>
+			<t-form-item
+				class="advanced-settings"
+				:class="{ open: form.advancedSettings }"
+				label="高级设置"
+				label-align="left"
+			>
+				<t-switch v-model="form.advancedSettings"></t-switch>
 			</t-form-item>
-			<t-form-item label="role" name="role">
-				<t-input v-model="form.role" placeholder="role值" />
-			</t-form-item>
+			<template v-if="form.advancedSettings">
+				<t-form-item label="返回内容的要求" name="image_content">
+					<t-textarea
+						v-model="form.image_content"
+						placeholder="请输入返回内容的要求"
+						:autosize="{ minRows: 3, maxRows: 5 }"
+					/>
+				</t-form-item>
+				<t-form-item label="角色" name="role">
+					<t-radio-group v-model="form.role">
+						<t-radio value="system">系统</t-radio>
+						<t-radio value="user">用户</t-radio>
+						<t-radio value="assistant">助手</t-radio>
+						<t-radio value="tool">工具</t-radio>
+					</t-radio-group>
+				</t-form-item>
+			</template>
 			<ImageUpload v-model="form.img" name="img" />
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
@@ -53,6 +68,7 @@ export interface Form {
 	serverlessId: string;
 	apiKey: string;
 	img: UploadProps["value"];
+	advancedSettings: boolean;
 	image_content: string;
 	role: string;
 }
@@ -63,14 +79,16 @@ const formInstance = ref<FormInstanceFunctions>();
 const form = ref<Form>({
 	serverlessId: "",
 	apiKey: "",
-	image_content: "",
 	img: [],
+	advancedSettings: false,
+	image_content: "",
 	role: "user"
 });
 const rules: FormProps["rules"] = {
 	serverlessId: [{ required: true, message: "请填写ServerLess ID", trigger: "blur" }],
 	apiKey: [{ required: true, message: "请填写API key", trigger: "blur" }],
-	img: [{ required: true, message: "请上传图片", trigger: "change" }]
+	img: [{ required: true, message: "请上传图片", trigger: "change" }],
+	role: [{ required: true, message: "请选择角色", trigger: "change" }]
 };
 const loading = ref(false);
 let requestController: AbortController | null = null;
@@ -82,6 +100,7 @@ const apiKeyRef = ref<InstanceType<typeof APIKey>>();
 const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 	try {
 		if (validateResult !== true) return;
+		console.log(form.value.img);
 		loading.value = true;
 		// 缓存数据
 		await saveForm();
@@ -106,7 +125,6 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 			})
 		});
 
-		console.log("🚀 ~ constonSubmit:FormProps['onSubmit']= ~ resString:", resString);
 		ocrData.value = resString.data.message.content;
 		// const data = JSON.parse(resString) as { image: string };
 
@@ -131,6 +149,11 @@ function saveForm() {
 </script>
 
 <style lang="scss" scoped>
+.advanced-settings {
+	&.open {
+		margin-bottom: 0px;
+	}
+}
 .result {
 	margin-top: 40px;
 }

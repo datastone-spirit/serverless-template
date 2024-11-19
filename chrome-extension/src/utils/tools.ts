@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-15 15:25:46
- * @LastEditTime: 2024-11-19 11:48:52
+ * @LastEditTime: 2024-11-19 16:47:21
  * @LastEditors: mulingyuer
  * @Description: 工具函数
  * @FilePath: \chrome-extension\src\utils\tools.ts
@@ -24,7 +24,6 @@ export async function localStorageGet(key: string, defaultValue: any) {
 
 /** 将一个file对象转化为base64字符串 */
 export function fileToBase64(file: File) {
-	console.log("🚀 ~ fileToBase64 ~ file:", file);
 	return new Promise<string>((resolve, reject) => {
 		const reader = new FileReader();
 
@@ -49,4 +48,14 @@ export function downloadBase64File(base64: string, fileName: string) {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
+}
+
+/** 将图片file转成blob链接 */
+export function fileToBlobUrl(file: File) {
+	return URL.createObjectURL(file);
+}
+
+/** 将blob链接从内存中释放 */
+export function releaseBlobUrl(url: string) {
+	URL.revokeObjectURL(url);
 }
