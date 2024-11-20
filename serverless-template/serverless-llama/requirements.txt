@@ -8,3 +8,4 @@ minio == 7.2.7
 pillow == 10.4.0
 spirit-gpu >= 0.0.1
 yarl == 1.17.0
+ollama == 0.3.3

@@ -17,13 +17,11 @@ RUN curl -fsSL https://ollama.com/install.sh | sh
 RUN ollama serve & sleep 30 && curl --retry 10 --retry-connrefused --retry-delay 1  -v http://localhost:11434/ && \
     curl -X POST -d '{"name": "llama3.2-vision"}' http://localhost:11434/api/pull
 
-RUN /spirit/ollama/venv/bin/python -m pip install ollama
-
 WORKDIR /spirit/ollama
 
 COPY requirements.txt /requirements.txt
 
-RUN /spirit/ollama/venv/bin/python -m pip install -r /requirements.txt
+RUN /spirit/ollama/venv/bin/python -m pip install -r /requirements.txt && rm -rf ~/.cache/pip
 
 COPY src/ /spirit/ollama_serverless
 
