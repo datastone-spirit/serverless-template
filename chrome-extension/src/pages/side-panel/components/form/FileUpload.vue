@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-19 10:08:19
- * @LastEditTime: 2024-11-19 10:33:29
+ * @LastEditTime: 2024-11-20 11:17:46
  * @LastEditors: mulingyuer
  * @Description: 文件上传组件
  * @FilePath: \chrome-extension\src\pages\side-panel\components\form\FileUpload.vue
@@ -16,6 +16,7 @@
 			:multiple="multiple"
 			:placeholder="placeholder"
 			:draggable="draggable"
+			:abridge-name="abridgeName"
 			:request-method="requestMethod"
 		/>
 	</t-form-item>
@@ -51,6 +52,11 @@ defineProps({
 	accept: {
 		type: String,
 		default: ""
+	},
+	/** 文件名过长时，需要省略中间的文本，保留首尾文本。 */
+	abridgeName: {
+		type: Array as PropType<UploadProps["abridgeName"]>,
+		default: () => [10, 8]
 	}
 });
 

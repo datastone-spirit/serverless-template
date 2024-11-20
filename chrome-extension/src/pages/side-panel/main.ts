@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-28 16:56:27
- * @LastEditTime: 2024-11-20 10:13:04
+ * @LastEditTime: 2024-11-20 10:59:55
  * @LastEditors: mulingyuer
  * @Description: side-panel main
  * @FilePath: \chrome-extension\src\pages\side-panel\main.ts
@@ -13,8 +13,8 @@ import pinia from "@side-panel/stores";
 import router from "@side-panel/router";
 
 // style
-import "normalize.css/normalize.css";
 import "tdesign-vue-next/es/style/index.css"; // 引入组件库的少量全局样式变量
+import "@/styles/theme.css";
 import "@/styles/index.scss";
 
 const app = createApp(App);

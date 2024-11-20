@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-18 17:08:36
- * @LastEditTime: 2024-11-19 17:45:35
+ * @LastEditTime: 2024-11-20 11:17:52
  * @LastEditors: mulingyuer
  * @Description: 图片上传组件
  * @FilePath: \chrome-extension\src\pages\side-panel\components\form\ImageUpload.vue
@@ -18,6 +18,7 @@
 			:show-thumbnail="true"
 			:placeholder="placeholder"
 			:draggable="draggable"
+			:abridge-name="abridgeName"
 			:request-method="requestMethod"
 		>
 		</t-upload>
@@ -44,6 +45,11 @@ defineProps({
 	draggable: {
 		type: Boolean,
 		default: true
+	},
+	/** 文件名过长时，需要省略中间的文本，保留首尾文本。 */
+	abridgeName: {
+		type: Array as PropType<UploadProps["abridgeName"]>,
+		default: () => [5, 6]
 	}
 });
 

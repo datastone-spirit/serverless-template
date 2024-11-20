@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-11 11:58:04
- * @LastEditTime: 2024-11-19 11:47:48
+ * @LastEditTime: 2024-11-20 10:56:03
  * @LastEditors: mulingyuer
  * @Description: manifest 配置文件
  * @FilePath: \chrome-extension\manifest.config.ts

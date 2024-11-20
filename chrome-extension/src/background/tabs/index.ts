@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 11:27:15
- * @LastEditTime: 2024-11-20 10:14:53
+ * @LastEditTime: 2024-11-20 11:09:23
  * @LastEditors: mulingyuer
  * @Description: tabs
  * @FilePath: \chrome-extension\src\background\tabs\index.ts

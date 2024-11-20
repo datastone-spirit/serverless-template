@@ -61,7 +61,7 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				"side-panel": "src/pages/side-panel/index.html",
-				"image-preview": "./src/pages/image-preview/index.html"
+				"image-preview": "src/pages/image-preview/index.html"
 			},
 			output: {
 				assetFileNames: "assets/[name]-[hash].[ext]", // 静态资源
