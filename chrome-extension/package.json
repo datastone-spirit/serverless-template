@@ -18,6 +18,7 @@
 		"version:update": "bumpp --no-commit --no-tag --no-push"
 	},
 	"dependencies": {
+		"@vueuse/core": "^11.2.0",
 		"dayjs": "^1.11.13",
 		"ky": "^1.7.2",
 		"normalize.css": "^8.0.1",
