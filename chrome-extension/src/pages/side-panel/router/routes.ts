@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:42:57
- * @LastEditTime: 2024-11-20 09:06:47
+ * @LastEditTime: 2024-11-20 11:46:38
  * @LastEditors: mulingyuer
  * @Description: 路由
  * @FilePath: \chrome-extension\src\pages\side-panel\router\routes.ts
@@ -46,6 +46,11 @@ export const routes: RouteRecordRaw[] = [
 				path: "/serverless/cosyvoice",
 				name: "ServerlessCosyvoice",
 				component: () => import("@side-panel/views/cosyvoice/index.vue")
+			},
+			{
+				path: "/serverless/whisper",
+				name: "ServerlessWhisper",
+				component: () => import("@side-panel/views/whisper/index.vue")
 			}
 		]
 	}
