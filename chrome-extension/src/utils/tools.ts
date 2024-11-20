@@ -1,12 +1,15 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-15 15:25:46
- * @LastEditTime: 2024-11-19 16:47:21
+ * @LastEditTime: 2024-11-20 17:07:37
  * @LastEditors: mulingyuer
  * @Description: 工具函数
  * @FilePath: \chrome-extension\src\utils\tools.ts
  * 怎么可能会有bug！！！
  */
+
+import { MessagePlugin } from "tdesign-vue-next";
+
 /** 写入持久化数据 */
 export async function localStorageSet(key: string, value: any) {
 	await chrome.storage.local.set({ [key]: value });
@@ -59,3 +62,18 @@ export function fileToBlobUrl(file: File) {
 export function releaseBlobUrl(url: string) {
 	URL.revokeObjectURL(url);
 }
+
+/** 复制功能 */
+export const copyText = (() => {
+	const { copy } = useClipboard();
+	return function copyText(text: string) {
+		copy(text)
+			.then(() => {
+				MessagePlugin.success("复制成功");
+			})
+			.catch((_e) => {
+				MessagePlugin.error("复制失败");
+				console.error(_e);
+			});
+	};
+})();

@@ -22,7 +22,8 @@
 		"pinia",
 		"Sdxl",
 		"tdesign",
-		"unplugin"
+		"unplugin",
+		"vueuse"
 	],
 	"github-actions.workflows.pinned.workflows": [".github/workflows/releases.yml"],
 	"typescript.tsdk": "node_modules\\typescript\\lib"

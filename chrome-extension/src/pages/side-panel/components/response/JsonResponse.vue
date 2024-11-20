@@ -1,10 +1,10 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 15:41:40
- * @LastEditTime: 2024-11-05 15:44:57
+ * @LastEditTime: 2024-11-20 17:13:24
  * @LastEditors: mulingyuer
  * @Description: json response
- * @FilePath: \chrome-extension\src\side-panel\components\response\JsonResponse.vue
+ * @FilePath: \chrome-extension\src\pages\side-panel\components\response\JsonResponse.vue
  * 怎么可能会有bug！！！
 -->
 <template>
@@ -16,11 +16,21 @@
 			:value="json"
 			readonly
 		/>
+		<div v-if="showCopy" class="json-response-copy">
+			<t-button class="audio-download-btn" size="small" variant="outline" @click="onCopy">
+				<template #icon><CopyIcon /></template>
+				复制
+			</t-button>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-defineProps({
+import { CopyIcon } from "tdesign-icons-vue-next";
+import { copyText } from "@/utils/tools";
+import { MessagePlugin } from "tdesign-vue-next";
+
+const props = defineProps({
 	json: {
 		type: String,
 		required: true
@@ -36,11 +46,26 @@ defineProps({
 	maxRows: {
 		type: Number,
 		default: 15
+	},
+	/** 是否显示复制按钮 */
+	showCopy: {
+		type: Boolean,
+		default: false
 	}
 });
+
+function onCopy() {
+	if (typeof props.json === "string" && props.json.length <= 0) {
+		MessagePlugin.warning("内容为空，无法复制");
+		return;
+	}
+	copyText(props.json);
+}
 </script>
 
 <style lang="scss" scoped>
-.json-response {
+.json-response-copy {
+	margin-top: 10px;
+	text-align: center;
 }
 </style>

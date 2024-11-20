@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-20 11:45:46
- * @LastEditTime: 2024-11-20 16:25:29
+ * @LastEditTime: 2024-11-20 17:12:03
  * @LastEditors: mulingyuer
  * @Description: whisper 语音转文字
  * @FilePath: \chrome-extension\src\pages\side-panel\views\whisper\index.vue
@@ -54,27 +54,22 @@
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
 		<div class="result">
-			<JsonResponse :json="audioText" />
+			<JsonResponse :json="audioText" show-copy />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { request } from "@/request";
+import { fileToBase64 } from "@/utils/tools";
 import APIKey from "@side-panel/components/form/APIKey.vue";
+import FileUpload from "@side-panel/components/form/FileUpload.vue";
 import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
 import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
 import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
-import FileUpload from "@side-panel/components/form/FileUpload.vue";
-import {
-	type FormInstanceFunctions,
-	type FormProps,
-	type SelectInputProps,
-	type UploadProps
-} from "tdesign-vue-next";
-import { fileToBase64 } from "@/utils/tools";
 import { useServerlessStore } from "@side-panel/stores";
+import { type FormInstanceFunctions, type FormProps, type UploadProps } from "tdesign-vue-next";
 import { Languages } from "./language";
-import { request } from "@/request";
 
 export interface Form {
 	serverlessId: string;
