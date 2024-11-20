@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 10:51:07
- * @LastEditTime: 2024-11-19 09:25:31
+ * @LastEditTime: 2024-11-20 09:03:51
  * @LastEditors: mulingyuer
  * @Description: 本地数据
  * @FilePath: \chrome-extension\src\pages\side-panel\views\home\data.ts
@@ -10,7 +10,7 @@
 import comfyuiServerlessImg from "@side-panel/assets/images/home/data/comfyui-serverless-img.png";
 import sdxlText2imgImg from "@side-panel/assets/images/home/data/sdxlText2imgImg.png";
 import cosyvoiceImg from "@side-panel/assets/images/home/data/cosyvoice.png";
-import ollamaOCRImg from "@side-panel/assets/images/home/data/ollama-ocr.png";
+import ollamaServerlessImg from "@side-panel/assets/images/home/data/ollama-serverless.png";
 
 export type List = Array<{
 	id: number;
@@ -53,11 +53,10 @@ export const HomeList: List = [
 	},
 	{
 		id: 4,
-		name: "ollama-OCR",
-		description:
-			"ollama-OCR 是一个基于Serverless架构的文字识别服务，可以识别图片中的文字，并返回识别结果。",
+		name: "ollama-serverless",
+		description: "使用 Ollama 模型实现一个OCR服务",
 		detailUrl: "",
-		img: ollamaOCRImg,
-		routerName: "ServerlessOllamaOCR"
+		img: ollamaServerlessImg,
+		routerName: "ServerlessOllamaServerless"
 	}
 ];

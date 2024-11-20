@@ -1,10 +1,10 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-18 11:35:13
- * @LastEditTime: 2024-11-19 17:17:06
+ * @LastEditTime: 2024-11-20 09:10:49
  * @LastEditors: mulingyuer
  * @Description: ollama-OCR
- * @FilePath: \chrome-extension\src\pages\side-panel\views\ollama-ocr\index.vue
+ * @FilePath: \chrome-extension\src\pages\side-panel\views\ollama-serverless\index.vue
  * 怎么可能会有bug！！！
 -->
 <template>
@@ -73,6 +73,26 @@ export interface Form {
 	role: string;
 }
 
+/** api响应数据类型 */
+interface OcrData {
+	data: {
+		model: string;
+		created_at: string;
+		message: {
+			role: string;
+			content: string;
+		};
+		done_reason: string;
+		done: boolean;
+		total_duration: number;
+		load_duration: number;
+		prompt_eval_count: number;
+		prompt_eval_duration: number;
+		eval_count: number;
+		eval_duration: number;
+	};
+}
+
 const serverlessStore = useServerlessStore();
 
 const formInstance = ref<FormInstanceFunctions>();
@@ -100,13 +120,12 @@ const apiKeyRef = ref<InstanceType<typeof APIKey>>();
 const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 	try {
 		if (validateResult !== true) return;
-		console.log(form.value.img);
 		loading.value = true;
 		// 缓存数据
 		await saveForm();
 		requestController = new AbortController();
 		// api请求
-		const resString = await request<string>({
+		const resString = await request<OcrData>({
 			url: `${form.value.serverlessId}/sync`,
 			method: "post",
 			responseType: "json",
@@ -126,7 +145,6 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		});
 
 		ocrData.value = resString.data.message.content;
-		// const data = JSON.parse(resString) as { image: string };
 
 		loading.value = false;
 	} catch (_error) {
