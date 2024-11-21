@@ -1,6 +1,6 @@
 ARG BASE_URL
 
-FROM ${BASE_URL}/megaease/cuda-12.1.1-cudnn-devel-ubuntu22.04:builder-torch231 AS ollama
+FROM ${BASE_URL}/library/cuda-12.1.1-cudnn-devel-ubuntu22.04:builder-torch231 AS ollama
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND noninteractive SHELL=/bin/bash
