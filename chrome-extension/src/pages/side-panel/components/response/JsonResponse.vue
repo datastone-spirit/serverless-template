@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 15:41:40
- * @LastEditTime: 2024-11-21 09:54:08
+ * @LastEditTime: 2024-11-21 11:43:20
  * @LastEditors: mulingyuer
  * @Description: json response
  * @FilePath: \chrome-extension\src\pages\side-panel\components\response\JsonResponse.vue
@@ -16,19 +16,12 @@
 			:value="json"
 			readonly
 		/>
-		<div v-if="showCopy" class="json-response-copy">
-			<t-button size="small" variant="outline" @click="onCopy">
-				<template #icon><CopyIcon /></template>
-				复制
-			</t-button>
-		</div>
+		<CopyBtn v-if="showCopy" class="json-response-copy" :content="json" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { CopyIcon } from "tdesign-icons-vue-next";
-import { copyText } from "@/utils/tools";
-import { MessagePlugin } from "tdesign-vue-next";
+import CopyBtn from "@side-panel/components/form/CopyBtn.vue";
 
 const props = defineProps({
 	json: {
@@ -53,19 +46,15 @@ const props = defineProps({
 		default: false
 	}
 });
-
-function onCopy() {
-	if (typeof props.json === "string" && props.json.length <= 0) {
-		MessagePlugin.warning("内容为空，无法复制");
-		return;
-	}
-	copyText(props.json);
-}
 </script>
 
 <style lang="scss" scoped>
+.json-response {
+	position: relative;
+}
 .json-response-copy {
-	margin-top: 10px;
-	text-align: center;
+	position: absolute;
+	top: 4px;
+	right: 4px;
 }
 </style>

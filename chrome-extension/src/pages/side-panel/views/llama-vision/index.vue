@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-18 11:35:13
- * @LastEditTime: 2024-11-21 10:07:44
+ * @LastEditTime: 2024-11-21 11:36:03
  * @LastEditors: mulingyuer
  * @Description: llama-vision
  * @FilePath: \chrome-extension\src\pages\side-panel\views\llama-vision\index.vue

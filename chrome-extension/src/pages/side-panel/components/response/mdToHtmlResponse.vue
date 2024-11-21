@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-21 08:56:34
- * @LastEditTime: 2024-11-21 10:11:24
+ * @LastEditTime: 2024-11-21 15:00:29
  * @LastEditors: mulingyuer
  * @Description: md转html响应内容组件
  * @FilePath: \chrome-extension\src\pages\side-panel\components\response\mdToHtmlResponse.vue
@@ -10,6 +10,7 @@
 <template>
 	<div class="md-to-html-response">
 		<div v-show="show" class="markdown-wrapper">
+			<CopyBtn class="md-copy-btn" :content="shadowRoot" />
 			<div class="markdown-body" ref="markdownBodyRef"></div>
 		</div>
 		<t-empty class="markdown-empty" v-show="!show" />
@@ -17,12 +18,18 @@
 </template>
 
 <script setup lang="ts">
+import CopyBtn from "@side-panel/components/form/CopyBtn.vue";
 import { marked } from "marked";
 
 const props = defineProps({
 	markdown: {
 		type: String,
 		required: true
+	},
+	/** 是否显示复制按钮 */
+	showCopy: {
+		type: Boolean,
+		default: true
 	}
 });
 
@@ -81,9 +88,15 @@ watch(show, () => {
 .markdown-wrapper {
 	min-height: 150px;
 	max-height: 300px;
-	overflow: auto;
+	overflow: overlay;
 	padding: 8px;
 	@include google-scrollbar();
+	position: relative;
+}
+.md-copy-btn {
+	position: absolute;
+	top: 4px;
+	right: 4px;
 }
 .markdown-empty {
 	margin: auto;

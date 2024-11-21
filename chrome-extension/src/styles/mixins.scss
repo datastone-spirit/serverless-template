@@ -1,5 +1,4 @@
 // 全局混入
-@use "sass:color";
 
 // 限制一行
 @mixin text-ellipsis {
@@ -37,11 +36,8 @@
 }
 
 // 谷歌滚动条样式
-@mixin google-scrollbar(
-	$width: 5px,
-	$thumb-color: rgba(0, 0, 0, 0.1),
-	$track-color: rgba(0, 0, 0, 0.1)
-) {
+@mixin google-scrollbar($width: 5px, $thumb-color: #a6a6a6, $track-color: #f3f3f3) {
+	scrollbar-gutter: stable;
 	// 基本滚动条宽度
 	&::-webkit-scrollbar {
 		width: $width; // 垂直滚动条宽度
@@ -52,6 +48,7 @@
 	&::-webkit-scrollbar-thumb {
 		background-color: $thumb-color; // 滚动条滑块颜色
 		border-radius: 10px; // 滚动条滑块圆角
+		border: 2px solid transparent;
 	}
 
 	// 滚动条轨道
@@ -61,7 +58,7 @@
 	}
 
 	// 当鼠标悬停时，改变滑块颜色
-	&:hover::-webkit-scrollbar-thumb {
-		background-color: color.scale($thumb-color, $lightness: 10%); // 悬停时变亮
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: #8b8b8b; // 悬停时变亮
 	}
 }
