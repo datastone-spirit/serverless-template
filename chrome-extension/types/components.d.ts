@@ -14,6 +14,7 @@ declare module 'vue' {
     TEmpty: typeof import('tdesign-vue-next')['Empty']
     TForm: typeof import('tdesign-vue-next')['Form']
     TFormItem: typeof import('tdesign-vue-next')['FormItem']
+    TImage: typeof import('tdesign-vue-next')['Image']
     TInput: typeof import('tdesign-vue-next')['Input']
     TOption: typeof import('tdesign-vue-next')['Option']
     TRadio: typeof import('tdesign-vue-next')['Radio']

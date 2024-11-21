@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 15:41:40
- * @LastEditTime: 2024-11-20 17:13:24
+ * @LastEditTime: 2024-11-21 09:54:08
  * @LastEditors: mulingyuer
  * @Description: json response
  * @FilePath: \chrome-extension\src\pages\side-panel\components\response\JsonResponse.vue
@@ -17,7 +17,7 @@
 			readonly
 		/>
 		<div v-if="showCopy" class="json-response-copy">
-			<t-button class="audio-download-btn" size="small" variant="outline" @click="onCopy">
+			<t-button size="small" variant="outline" @click="onCopy">
 				<template #icon><CopyIcon /></template>
 				复制
 			</t-button>
