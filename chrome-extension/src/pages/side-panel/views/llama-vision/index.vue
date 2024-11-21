@@ -1,14 +1,14 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-18 11:35:13
- * @LastEditTime: 2024-11-20 09:10:49
+ * @LastEditTime: 2024-11-21 10:07:44
  * @LastEditors: mulingyuer
- * @Description: ollama-OCR
- * @FilePath: \chrome-extension\src\pages\side-panel\views\ollama-serverless\index.vue
+ * @Description: llama-vision
+ * @FilePath: \chrome-extension\src\pages\side-panel\views\llama-vision\index.vue
  * 怎么可能会有bug！！！
 -->
 <template>
-	<div class="ollama-ocr">
+	<div class="llama-vision">
 		<t-form
 			ref="formInstance"
 			:data="form"
@@ -48,21 +48,21 @@
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
 		<div class="result">
-			<JsonResponse :json="ocrData" />
+			<mdToHtmlResponse :markdown="ocrData" />
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { request } from "@/request";
+import { fileToBase64 } from "@/utils/tools";
 import APIKey from "@side-panel/components/form/APIKey.vue";
+import ImageUpload from "@side-panel/components/form/ImageUpload.vue";
 import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
 import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
-import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
-import ImageUpload from "@side-panel/components/form/ImageUpload.vue";
-import { type FormInstanceFunctions, type FormProps, type UploadProps } from "tdesign-vue-next";
-import { fileToBase64 } from "@/utils/tools";
+import mdToHtmlResponse from "@side-panel/components/response/mdToHtmlResponse.vue";
 import { useServerlessStore } from "@side-panel/stores";
-import { request } from "@/request";
+import { type FormInstanceFunctions, type FormProps, type UploadProps } from "tdesign-vue-next";
 
 export interface Form {
 	serverlessId: string;
@@ -124,6 +124,7 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		// 缓存数据
 		await saveForm();
 		requestController = new AbortController();
+		ocrData.value = "";
 		// api请求
 		const resString = await request<OcrData>({
 			url: `${form.value.serverlessId}/sync`,
