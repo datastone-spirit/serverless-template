@@ -21,6 +21,9 @@ def start_handler():
         image_base64 = request_input.get('image_base64', '')
         image_content = request_input.get('image_content', '')
         role = request_input.get('role', 'user')
+        top_k = request_input.get('top_k', 0)
+        top_p = request_input.get('top_p', 0.9)
+        temperature = request_input.get('temperature', 0.7)
 
         if "," in image_base64:
             base64_data = image_base64.split(",")[1]
@@ -35,7 +38,12 @@ def start_handler():
                 'role': role,
                 'content': image_content,
                 'images': [image_bytes]
-            }]
+            }],
+            options={
+                top_k: top_k,
+                top_p: top_p,
+                temperature: temperature
+            }
         )
 
         # logging.info(f"Received request with prompt: {response_ollama}")
