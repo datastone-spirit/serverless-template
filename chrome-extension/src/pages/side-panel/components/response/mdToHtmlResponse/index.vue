@@ -1,10 +1,10 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-21 08:56:34
- * @LastEditTime: 2024-11-21 15:00:29
+ * @LastEditTime: 2024-11-22 16:23:44
  * @LastEditors: mulingyuer
  * @Description: md转html响应内容组件
- * @FilePath: \chrome-extension\src\pages\side-panel\components\response\mdToHtmlResponse.vue
+ * @FilePath: \chrome-extension\src\pages\side-panel\components\response\mdToHtmlResponse\index.vue
  * 怎么可能会有bug！！！
 -->
 <template>
@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import CopyBtn from "@side-panel/components/form/CopyBtn.vue";
 import { marked } from "marked";
+import GithubStyle from "./github-markdown.css?raw";
 
 const props = defineProps({
 	markdown: {
@@ -61,8 +62,9 @@ function generateHtmlTemplate(html: string) {
         all: initial; 
         font-size: 16px;
       }
+			${GithubStyle}
     </style>
-    ${html}
+		<div class="markdown-body">${html}</div>
   `;
 }
 
@@ -87,9 +89,9 @@ watch(show, () => {
 }
 .markdown-wrapper {
 	min-height: 150px;
-	max-height: 300px;
+	max-height: 800px;
 	overflow: overlay;
-	padding: 8px;
+	padding: 20px 8px;
 	@include google-scrollbar();
 	position: relative;
 }
