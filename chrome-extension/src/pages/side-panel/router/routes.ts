@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:42:57
- * @LastEditTime: 2024-11-21 08:52:45
+ * @LastEditTime: 2024-11-26 10:12:22
  * @LastEditors: mulingyuer
  * @Description: 路由
  * @FilePath: \chrome-extension\src\pages\side-panel\router\routes.ts
@@ -51,6 +51,16 @@ export const routes: RouteRecordRaw[] = [
 				path: "/serverless/whisper",
 				name: "ServerlessWhisper",
 				component: () => import("@side-panel/views/whisper/index.vue")
+			},
+			{
+				path: "/serverless/cog-video",
+				name: "ServerlessCogVideo",
+				component: () => import("@side-panel/views/cog-video/index.vue")
+			},
+			{
+				path: "/serverless/ltx-video",
+				name: "ServerlessLtxVideo",
+				component: () => import("@side-panel/views/ltx-video/index.vue")
 			}
 		]
 	}

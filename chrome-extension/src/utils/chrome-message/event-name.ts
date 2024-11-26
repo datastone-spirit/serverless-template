@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 11:57:42
- * @LastEditTime: 2024-11-18 16:02:28
+ * @LastEditTime: 2024-11-26 11:17:21
  * @LastEditors: mulingyuer
  * @Description: 事件名
  * @FilePath: \chrome-extension\src\utils\chrome-message\event-name.ts
@@ -32,6 +32,12 @@ export enum EventName {
 	CREATE_POSITIVE_PROMPT_MENU = "create-positive-prompt-menu",
 	/** 关闭正向提示词菜单 */
 	CLOSE_POSITIVE_PROMPT_MENU = "close-positive-prompt-menu",
+	/** 填充反向提示词 */
+	FILL_NEGATIVE_PROMPT = "fill-negative-prompt",
+	/** 创建反向提示词菜单 */
+	CREATE_NEGATIVE_PROMPT_MENU = "create-negative-prompt-menu",
+	/** 关闭反向提示词菜单 */
+	CLOSE_NEGATIVE_PROMPT_MENU = "close-negative-prompt-menu",
 
 	/** 打开新页面 */
 	OPEN_NEW_PAGE = "open-new-page"

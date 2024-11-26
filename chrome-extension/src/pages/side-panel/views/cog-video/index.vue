@@ -1,14 +1,14 @@
 <!--
  * @Author: mulingyuer
- * @Date: 2024-11-05 16:01:20
- * @LastEditTime: 2024-11-26 11:32:03
+ * @Date: 2024-11-25 16:15:41
+ * @LastEditTime: 2024-11-25 16:38:58
  * @LastEditors: mulingyuer
- * @Description: sdxl-text2img
- * @FilePath: \chrome-extension\src\pages\side-panel\views\sdxl-text2img\index.vue
+ * @Description: cog-video
+ * @FilePath: \chrome-extension\src\pages\side-panel\views\cog-video\index.vue
  * 怎么可能会有bug！！！
 -->
 <template>
-	<div class="sdxl-text2img">
+	<div class="cog-video">
 		<t-form
 			ref="formInstance"
 			:data="form"
@@ -19,53 +19,38 @@
 		>
 			<ServerLessID ref="serverLessIDRef" v-model="form.serverlessId" name="serverlessId" />
 			<APIKey ref="apiKeyRef" v-model="form.apiKey" name="apiKey" />
-			<PositivePrompt v-model="form.keywords" name="keywords" />
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
-		<div class="result">
-			<ImageResponse v-if="isImg" :src="imgSrc" />
-			<JsonResponse v-else :json="otherData" />
-		</div>
+		<div class="result"></div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import PositivePrompt from "@/pages/side-panel/components/form/PositivePrompt.vue";
 import { request } from "@/request";
 import APIKey from "@side-panel/components/form/APIKey.vue";
 import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
 import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
-import ImageResponse from "@side-panel/components/response/ImageResponse.vue";
-import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
 import { useServerlessStore } from "@side-panel/stores";
-import { type FormInstanceFunctions, type FormProps } from "tdesign-vue-next";
-import { usePromptStore } from "@side-panel/stores";
+import type { FormInstanceFunctions, FormProps } from "tdesign-vue-next";
 
 export interface Form {
-	serverlessId: string;
 	apiKey: string;
-	keywords: string;
+	serverlessId: string;
 }
 
 const serverlessStore = useServerlessStore();
-const promptStore = usePromptStore();
 
 const formInstance = ref<FormInstanceFunctions>();
 const form = ref<Form>({
 	serverlessId: "",
-	apiKey: "",
-	keywords: ""
+	apiKey: ""
 });
 const rules: FormProps["rules"] = {
 	serverlessId: [{ required: true, message: "请填写ServerLess ID", trigger: "blur" }],
-	apiKey: [{ required: true, message: "请填写API key", trigger: "blur" }],
-	keywords: [{ required: true, message: "请填写关键词", trigger: "blur" }]
+	apiKey: [{ required: true, message: "请填写API key", trigger: "blur" }]
 };
 const loading = ref(false);
 let requestController: AbortController | null = null;
-const isImg = ref(true);
-const imgSrc = ref("");
-const otherData = ref("");
 const serverLessIDRef = ref<InstanceType<typeof ServerLessID>>();
 const apiKeyRef = ref<InstanceType<typeof APIKey>>();
 
@@ -77,11 +62,13 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		// 缓存数据
 		await saveForm();
 		requestController = new AbortController();
+
 		// api请求
 		const resString = await request<string>({
 			url: `${form.value.serverlessId}/sync`,
 			method: "post",
 			responseType: "json",
+			timeout: 100000000, // 100秒超时
 			signal: requestController.signal,
 			prefixUrl: serverlessStore.baseUrl,
 			headers: {
@@ -89,18 +76,14 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 				Authorization: `Bearer ${form.value.apiKey}`
 			},
 			body: JSON.stringify({
-				input: { prompt: form.value.keywords }
+				input: {
+					prompt: JSON.stringify({})
+				}
 			})
 		});
-		const data = JSON.parse(resString) as { image: string };
 
-		if (Object.hasOwn(data, "image")) {
-			isImg.value = true;
-			imgSrc.value = `data:image/png;base64, ${data.image}`;
-		} else {
-			isImg.value = false;
-			otherData.value = typeof resString === "string" ? resString : JSON.stringify(resString);
-		}
+		// const resData = JSON.parse(resString) as { data: { audio_base64: string } };
+		// audioSrc.value = `data:audio/wav;base64,${resData.data.audio_base64}`;
 
 		loading.value = false;
 	} catch (_error) {
@@ -119,12 +102,7 @@ function onCancel() {
 function saveForm() {
 	serverLessIDRef.value?.saveData();
 	apiKeyRef.value?.saveData();
-	promptStore.setSdxlText2imgPrompt(form.value.keywords);
 }
-
-onMounted(() => {
-	form.value.keywords = promptStore.sdxlText2imgPrompt;
-});
 </script>
 
 <style lang="scss" scoped>

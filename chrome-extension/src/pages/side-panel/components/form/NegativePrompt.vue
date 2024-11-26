@@ -1,16 +1,16 @@
 <!--
  * @Author: mulingyuer
- * @Date: 2024-11-05 15:26:19
- * @LastEditTime: 2024-11-26 11:36:08
+ * @Date: 2024-11-26 11:03:03
+ * @LastEditTime: 2024-11-26 11:17:51
  * @LastEditors: mulingyuer
- * @Description: keywords
- * @FilePath: \chrome-extension\src\pages\side-panel\components\form\PositivePrompt.vue
+ * @Description: 负面提示词
+ * @FilePath: \chrome-extension\src\pages\side-panel\components\form\NegativePrompt.vue
  * 怎么可能会有bug！！！
 -->
 <template>
 	<t-form-item :label="label" :name="name">
 		<t-textarea
-			v-model="positivePrompt"
+			v-model="negativePrompt"
 			:placeholder="placeholder"
 			:autosize="{ minRows, maxRows }"
 		/>
@@ -23,14 +23,14 @@ import { chromeMessage, EventName, type EventCallback } from "@/utils/chrome-mes
 defineProps({
 	label: {
 		type: String,
-		default: "提示词"
+		default: "反向提示词"
 	},
 	name: {
 		type: String
 	},
 	placeholder: {
 		type: String,
-		default: "请输入提示词，英文逗号分隔"
+		default: "请输入反向提示词，英文逗号分隔"
 	},
 	minRows: {
 		type: Number,
@@ -42,25 +42,25 @@ defineProps({
 	}
 });
 
-const positivePrompt = defineModel({ type: String, required: true });
+const negativePrompt = defineModel({ type: String, required: true });
 
 /** 监听右键菜单 */
 const listenContextMenu: EventCallback = (message) => {
 	const { data } = message;
 	if (!data) return;
-	positivePrompt.value = data;
+	negativePrompt.value = data;
 };
 
 /** 创建右键菜单 */
 function createContextMenu() {
-	chromeMessage.on(EventName.FILL_POSITIVE_PROMPT, listenContextMenu);
-	chromeMessage.emit(EventName.CREATE_POSITIVE_PROMPT_MENU);
+	chromeMessage.on(EventName.FILL_NEGATIVE_PROMPT, listenContextMenu);
+	chromeMessage.emit(EventName.CREATE_NEGATIVE_PROMPT_MENU);
 }
 
 /** 关闭右键菜单 */
 function removeContextMenu() {
-	chromeMessage.off(EventName.FILL_POSITIVE_PROMPT, listenContextMenu);
-	chromeMessage.emit(EventName.CLOSE_POSITIVE_PROMPT_MENU);
+	chromeMessage.off(EventName.FILL_NEGATIVE_PROMPT, listenContextMenu);
+	chromeMessage.emit(EventName.CLOSE_NEGATIVE_PROMPT_MENU);
 }
 
 onMounted(() => {

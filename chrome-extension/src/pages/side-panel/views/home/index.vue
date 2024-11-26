@@ -1,17 +1,17 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 09:44:26
- * @LastEditTime: 2024-11-06 17:26:23
+ * @LastEditTime: 2024-11-26 10:04:41
  * @LastEditors: mulingyuer
  * @Description: 首页
- * @FilePath: \chrome-extension\src\side-panel\views\home\index.vue
+ * @FilePath: \chrome-extension\src\pages\side-panel\views\home\index.vue
  * 怎么可能会有bug！！！
 -->
 <template>
 	<div class="home">
 		<div class="home-list">
 			<t-row :gutter="[12, 12]">
-				<t-col v-for="item in list" :key="item.id" :xs="12" :sm="6" :lg="4">
+				<t-col v-for="(item, index) in list" :key="index" :xs="12" :sm="6" :lg="4">
 					<div class="home-list-item">
 						<div
 							class="home-list-item-bg"

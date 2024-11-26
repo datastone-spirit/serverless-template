@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-10-31 15:22:41
- * @LastEditTime: 2024-11-18 16:02:35
+ * @LastEditTime: 2024-11-26 11:21:46
  * @LastEditors: mulingyuer
  * @Description: 上下文菜单
  * @FilePath: \chrome-extension\src\background\context-menus\index.ts
@@ -9,7 +9,7 @@
  */
 import { chromeContextMenu } from "@/utils/chrome-context-menus";
 import { chromeMessage, EventName } from "@/utils/chrome-message";
-import { ServerlessIdMenu, ApiKeyMenu, PositivePromptMenu } from "./menus";
+import { ServerlessIdMenu, ApiKeyMenu, PositivePromptMenu, NegativePromptMenu } from "./menus";
 
 export class ContextMenus {
 	private isInit = false;
@@ -53,6 +53,15 @@ export class ContextMenus {
 		/** 关闭正向提示词菜单 */
 		chromeMessage.on(EventName.CLOSE_POSITIVE_PROMPT_MENU, () => {
 			chromeContextMenu.remove({ id: PositivePromptMenu.menuProperties.id });
+		});
+
+		/** 创建反向提示词菜单 */
+		chromeMessage.on(EventName.CREATE_NEGATIVE_PROMPT_MENU, () => {
+			chromeContextMenu.create(NegativePromptMenu);
+		});
+		/** 关闭反向提示词菜单 */
+		chromeMessage.on(EventName.CLOSE_NEGATIVE_PROMPT_MENU, () => {
+			chromeContextMenu.remove({ id: NegativePromptMenu.menuProperties.id });
 		});
 	}
 }

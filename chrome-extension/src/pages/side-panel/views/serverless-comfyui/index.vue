@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-10-29 15:29:30
- * @LastEditTime: 2024-11-18 16:19:38
+ * @LastEditTime: 2024-11-26 11:35:49
  * @LastEditors: mulingyuer
  * @Description: base64图片组件
  * @FilePath: \chrome-extension\src\pages\side-panel\views\serverless-comfyui\index.vue
@@ -19,7 +19,7 @@
 		>
 			<ServerLessID ref="serverLessIDRef" v-model="form.serverlessId" name="serverlessId" />
 			<APIKey ref="apiKeyRef" v-model="form.apiKey" name="apiKey" />
-			<PositivePrompt ref="positivePromptRef" v-model="form.keywords" name="keywords" />
+			<PositivePrompt v-model="form.keywords" name="keywords" />
 			<WidthOrHeight
 				v-model:width="form.width"
 				v-model:height="form.height"
@@ -50,7 +50,7 @@ import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons
 import WidthOrHeight from "@side-panel/components/form/WidthOrHeight.vue";
 import ImageResponse from "@side-panel/components/response/ImageResponse.vue";
 import JsonResponse from "@side-panel/components/response/JsonResponse.vue";
-import { useServerlessStore } from "@side-panel/stores";
+import { useServerlessStore, usePromptStore } from "@side-panel/stores";
 import { type FormInstanceFunctions, type FormProps } from "tdesign-vue-next";
 
 export interface Form {
@@ -67,6 +67,7 @@ export interface Form {
 }
 
 const serverlessStore = useServerlessStore();
+const promptStore = usePromptStore();
 
 const formInstance = ref<FormInstanceFunctions>();
 const form = ref<Form>({
@@ -92,7 +93,6 @@ const imgSrc = ref("");
 const otherData = ref("");
 const serverLessIDRef = ref<InstanceType<typeof ServerLessID>>();
 const apiKeyRef = ref<InstanceType<typeof APIKey>>();
-const positivePromptRef = ref<InstanceType<typeof PositivePrompt>>();
 
 /** 提交 */
 const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
@@ -151,8 +151,12 @@ function onCancel() {
 function saveForm() {
 	serverLessIDRef.value?.saveData();
 	apiKeyRef.value?.saveData();
-	positivePromptRef.value?.saveData();
+	promptStore.setServerlessComfyuiPrompt(form.value.keywords);
 }
+
+onMounted(() => {
+	form.value.keywords = promptStore.serverlessComfyuiPrompt;
+});
 </script>
 
 <style lang="scss" scoped>

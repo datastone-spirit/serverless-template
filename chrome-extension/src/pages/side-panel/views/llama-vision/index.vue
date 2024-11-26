@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-18 11:35:13
- * @LastEditTime: 2024-11-22 17:21:16
+ * @LastEditTime: 2024-11-26 10:59:59
  * @LastEditors: mulingyuer
  * @Description: llama-vision
  * @FilePath: \chrome-extension\src\pages\side-panel\views\llama-vision\index.vue
@@ -19,15 +19,7 @@
 		>
 			<ServerLessID ref="serverLessIDRef" v-model="form.serverlessId" name="serverlessId" />
 			<APIKey ref="apiKeyRef" v-model="form.apiKey" name="apiKey" />
-			<t-form-item
-				class="advanced-settings"
-				:class="{ open: form.advancedSettings }"
-				label="高级设置"
-				label-align="left"
-			>
-				<t-switch v-model="form.advancedSettings"></t-switch>
-			</t-form-item>
-			<template v-if="form.advancedSettings">
+			<AdvancedSettings v-model="form.advancedSettings">
 				<t-form-item label="返回内容的要求" name="promptType">
 					<t-select
 						:value="form.promptType"
@@ -79,7 +71,7 @@
 						</t-col>
 					</t-row>
 				</t-form-item>
-			</template>
+			</AdvancedSettings>
 			<ImageUpload v-model="form.img" name="img" />
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
@@ -95,6 +87,7 @@ import { fileToBase64 } from "@/utils/tools";
 import APIKey from "@side-panel/components/form/APIKey.vue";
 import ImageUpload from "@side-panel/components/form/ImageUpload.vue";
 import ServerLessID from "@side-panel/components/form/ServerLessID.vue";
+import AdvancedSettings from "@side-panel/components/form/AdvancedSettings.vue";
 import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
 import mdToHtmlResponse from "@/pages/side-panel/components/response/mdToHtmlResponse/index.vue";
 import { useServerlessStore } from "@side-panel/stores";
@@ -278,11 +271,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.advanced-settings {
-	&.open {
-		margin-bottom: 0px;
-	}
-}
 .custom-btn-wrapper {
 	margin-left: 16px;
 	display: flex;

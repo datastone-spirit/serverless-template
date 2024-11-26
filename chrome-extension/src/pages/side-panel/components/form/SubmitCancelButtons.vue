@@ -1,24 +1,20 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-05 15:34:31
- * @LastEditTime: 2024-11-05 15:39:08
+ * @LastEditTime: 2024-11-26 16:55:00
  * @LastEditors: mulingyuer
  * @Description: 提交和取消按钮
- * @FilePath: \chrome-extension\src\side-panel\components\form\SubmitCancelButtons.vue
+ * @FilePath: \chrome-extension\src\pages\side-panel\components\form\SubmitCancelButtons.vue
  * 怎么可能会有bug！！！
 -->
 <template>
 	<t-form-item>
-		<t-row class="btn-row" :gutter="8">
-			<t-col :span="9">
-				<t-button theme="primary" type="submit" size="large" block :loading="loading">
-					{{ loading ? loadingText : submitText }}
-				</t-button>
-			</t-col>
-			<t-col :span="3">
-				<t-button theme="default" size="large" block @click="onCancel">{{ cancelText }}</t-button>
-			</t-col>
-		</t-row>
+		<t-button theme="primary" type="submit" size="large" block :loading="loading">
+			{{ loading ? loadingText : submitText }}
+		</t-button>
+		<t-button class="cancel-btn" theme="default" size="large" block @click="onCancel">
+			{{ cancelText }}
+		</t-button>
 	</t-form-item>
 </template>
 
@@ -51,7 +47,8 @@ function onCancel() {
 </script>
 
 <style lang="scss" scoped>
-.btn-row {
-	width: 100%;
+.cancel-btn {
+	width: 30%;
+	margin-left: 12px;
 }
 </style>
