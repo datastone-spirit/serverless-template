@@ -50,11 +50,29 @@ RUN curl -L 'https://huggingface.co/Comfy-Org/stable-diffusion-3.5-fp8/resolve/m
 
 RUN apt-get update -y && apt-get upgrade -y && apt-get install -y --no-install-recommends openssh-server && rm -rf /var/lib/apt/lists/*
 
+WORKDIR /workspace/ComfyUI/custom_nodes
+RUN git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+
+SHELL [ "/bin/bash", "-c" ]
+ENV SHELL=/bin/bash
+
+RUN source /workspace/ComfyUI/venv/bin/activate && \
+    cd /workspace/ComfyUI/custom_nodes/ComfyUI-Manager && \
+    pip install -r requirements.txt && \
+    cd /workspace/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite && \
+    pip install -r requirements.txt && \
+    cd /workspace/ComfyUI/custom_nodes/ComfyUI-Impact-Pack && \
+    /workspace/ComfyUI/venv/bin/python install.py && \
+    cd /workspace/ComfyUI/custom_nodes/ComfyUI-Impact-Pack/impact_subpack && \
+    /workspace/ComfyUI/venv/bin/python install.py && \
+    rm -rf ~/.cache/pip
+
+
 WORKDIR /workspace/ComfyUI
 
 COPY requirements.txt /requirements.txt
 
-RUN /workspace/ComfyUI/venv/bin/python -m pip install -r /requirements.txt
+RUN /workspace/ComfyUI/venv/bin/python -m pip install -r /requirements.txt && rm -rf ~/.cache/pip
 
 COPY src/ /workspace/ltx_serverless
 

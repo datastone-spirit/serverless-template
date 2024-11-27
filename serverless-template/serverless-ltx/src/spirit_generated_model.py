@@ -13,7 +13,5 @@ class RequestInput(BaseModel):
     videoWidth: str
     videoHeight: str
     steps: str
-    seeds: str
-    accessKeyID: str
-    cfg: int
-    accessKeySecret: str
+    seed: str
+    cfg: str

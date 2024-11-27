@@ -2,7 +2,7 @@ prompt_text = r'''
 {
   "6": {
     "inputs": {
-      "text": "A woman with long brown hair and light skin smiles at another woman with long blonde hair. The woman with brown hair wears a black jacket and has a small, barely noticeable mole on her right cheek. The camera angle is a close-up, focused on the woman with brown hair's face. The lighting is warm and natural, likely from the setting sun, casting a soft glow on the scene. The scene appears to be real-life footage.",
+      "text": "In a serene courtyard setting, a monkey relaxes in a steaming hot spring, its eyes fixed on a smartphone. The monkey is the main focus of the scene. Surrounded by mist and the gentle sounds of nature, the monkey appears both content and engaged with the device. The warm water contrasts with the cool air, creating a cozy and peaceful atmosphere. The camera captures this unusual scene from a low angle, focused on the monkey, emphasizing the monkey's relaxed posture and the steam rising around it. The soft, diffused lighting enhances the tranquil mood, making the moment feel both whimsical and serene",
       "clip": [
         "38",
         0
@@ -35,7 +35,7 @@ prompt_text = r'''
   },
   "38": {
     "inputs": {
-      "clip_name": "t5xxl_fp16.safetensors",
+      "clip_name": "t5xxl_fp8_e4m3fn_scaled.safetensors",
       "type": "ltxv"
     },
     "class_type": "CLIPLoader"
@@ -100,8 +100,8 @@ prompt_text = r'''
   "72": {
     "inputs": {
       "add_noise": true,
-      "noise_seed": 1042047503385047,
-      "cfg": 3,
+      "noise_seed": 469508935569123,
+      "cfg": 7.5,
       "model": [
         "44",
         0
@@ -134,6 +134,28 @@ prompt_text = r'''
       "sampler_name": "euler"
     },
     "class_type": "KSamplerSelect"
+  },
+  "77": {
+    "inputs": {
+      "frame_rate": 25,
+      "loop_count": 0,
+      "filename_prefix": "ltx",
+      "format": "video/h264-mp4",
+      "pix_fmt": "yuv420p",
+      "crf": 19,
+      "save_metadata": true,
+      "pingpong": false,
+      "save_output": true,
+      "images": [
+        "8",
+        0
+      ],
+      "vae": [
+        "44",
+        2
+      ]
+    },
+    "class_type": "VHS_VideoCombine"
   }
 }
 '''
