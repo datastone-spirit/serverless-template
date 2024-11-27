@@ -1,0 +1,16 @@
+services:
+  builder:
+    image: $registry/$tenant_name/ltx-serverless:builder
+    build:
+      context: .
+      target: builder
+      args:
+      - BASE_URL=$registry
+  ltx-serverless:
+    image: $registry/$tenant_name/ltx-serverless:ltx
+    build:
+      context: .
+      target: ltx
+      args:
+      - BASE_URL=$registry
+
