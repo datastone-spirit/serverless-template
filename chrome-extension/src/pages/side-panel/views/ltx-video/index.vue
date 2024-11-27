@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-26 10:11:26
- * @LastEditTime: 2024-11-26 16:42:49
+ * @LastEditTime: 2024-11-27 09:07:02
  * @LastEditors: mulingyuer
  * @Description: LTX-Video
  * @FilePath: \chrome-extension\src\pages\side-panel\views\ltx-video\index.vue
@@ -135,8 +135,6 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		await saveForm();
 		requestController = new AbortController();
 
-		console.log(form.value.seed);
-
 		// api请求
 		const resString = await request<string>({
 			url: `${form.value.serverlessId}/sync`,
@@ -151,10 +149,21 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 			},
 			body: JSON.stringify({
 				input: {
-					prompt: JSON.stringify({})
+					prompt: JSON.stringify({
+						serverlessId: form.value.serverlessId,
+						apiKey: form.value.apiKey,
+						positive: form.value.positive,
+						negative: form.value.negative,
+						videoWidth: form.value.videoWidth,
+						videoHeight: form.value.videoHeight,
+						seed: form.value.seed,
+						steps: form.value.steps
+					})
 				}
 			})
 		});
+
+		console.log("🚀 ~ constonSubmit:FormProps[onSubmit]= ~ resString:", resString);
 
 		// const resData = JSON.parse(resString) as { data: { audio_base64: string } };
 		// audioSrc.value = `data:audio/wav;base64,${resData.data.audio_base64}`;
