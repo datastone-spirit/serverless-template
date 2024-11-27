@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-26 10:11:26
- * @LastEditTime: 2024-11-27 09:07:02
+ * @LastEditTime: 2024-11-27 16:30:37
  * @LastEditors: mulingyuer
  * @Description: LTX-Video
  * @FilePath: \chrome-extension\src\pages\side-panel\views\ltx-video\index.vue
@@ -28,14 +28,16 @@
 				height-label="视频高度"
 				height-name="videoHeight"
 			/>
-			<AdvancedSettings v-model="form.openAdvanced">
+			<AdvancedSettings>
 				<NegativePrompt v-model="form.negative" name="negative" />
 				<Seed v-model="form.seed" name="seed" />
 				<Steps v-model="form.steps" name="steps" />
 			</AdvancedSettings>
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
-		<div class="result"></div>
+		<div class="result">
+			<VideoResponse :src="resultSrc" />
+		</div>
 	</div>
 </template>
 
@@ -50,8 +52,10 @@ import Seed from "@side-panel/components/form/Seed.vue";
 import Steps from "@side-panel/components/form/Steps.vue";
 import SubmitCancelButtons from "@side-panel/components/form/SubmitCancelButtons.vue";
 import PositivePrompt from "@side-panel/components/form/PositivePrompt.vue";
+import VideoResponse from "@side-panel/components/response/VideoResponse.vue";
 import { useServerlessStore, usePromptStore } from "@side-panel/stores";
 import type { FormInstanceFunctions, FormProps } from "tdesign-vue-next";
+import aaa from "./WeChat_20241127161605.mp4";
 
 export interface Form {
 	apiKey: string;
@@ -68,8 +72,12 @@ export interface Form {
 	seed: number | "";
 	/** 推理步骤 */
 	steps: number;
-	/** 高级设置 */
-	openAdvanced: boolean;
+}
+
+interface ResultData {
+	status: string;
+	prompt_id: string;
+	image: string;
 }
 
 const serverlessStore = useServerlessStore();
@@ -81,11 +89,10 @@ const form = ref<Form>({
 	apiKey: "",
 	positive: "",
 	negative: "",
-	videoWidth: 512,
+	videoWidth: 768,
 	videoHeight: 512,
 	seed: "",
-	steps: 30,
-	openAdvanced: false
+	steps: 30
 });
 const rules: FormProps["rules"] = {
 	serverlessId: [{ required: true, message: "请填写ServerLess ID", trigger: "blur" }],
@@ -125,6 +132,7 @@ const loading = ref(false);
 let requestController: AbortController | null = null;
 const serverLessIDRef = ref<InstanceType<typeof ServerLessID>>();
 const apiKeyRef = ref<InstanceType<typeof APIKey>>();
+const resultSrc = ref<string>("");
 
 /** 提交 */
 const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
@@ -136,7 +144,7 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		requestController = new AbortController();
 
 		// api请求
-		const resString = await request<string>({
+		const resultData = await request<ResultData>({
 			url: `${form.value.serverlessId}/sync`,
 			method: "post",
 			responseType: "json",
@@ -149,24 +157,17 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 			},
 			body: JSON.stringify({
 				input: {
-					prompt: JSON.stringify({
-						serverlessId: form.value.serverlessId,
-						apiKey: form.value.apiKey,
-						positive: form.value.positive,
-						negative: form.value.negative,
-						videoWidth: form.value.videoWidth,
-						videoHeight: form.value.videoHeight,
-						seed: form.value.seed,
-						steps: form.value.steps
-					})
+					positive: form.value.positive,
+					negative: form.value.negative,
+					videoWidth: form.value.videoWidth + "",
+					videoHeight: form.value.videoHeight + "",
+					seed: (form.value.seed ? form.value.seed : -1) + "",
+					steps: form.value.steps + ""
 				}
 			})
 		});
 
-		console.log("🚀 ~ constonSubmit:FormProps[onSubmit]= ~ resString:", resString);
-
-		// const resData = JSON.parse(resString) as { data: { audio_base64: string } };
-		// audioSrc.value = `data:audio/wav;base64,${resData.data.audio_base64}`;
+		resultSrc.value = `data:video/mp4;base64,${resultData.image}`;
 
 		loading.value = false;
 	} catch (_error) {

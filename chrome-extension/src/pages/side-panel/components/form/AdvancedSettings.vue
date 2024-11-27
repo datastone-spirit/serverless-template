@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-26 10:54:05
- * @LastEditTime: 2024-11-26 10:58:25
+ * @LastEditTime: 2024-11-27 09:18:03
  * @LastEditors: mulingyuer
  * @Description: 高级设置
  * @FilePath: \chrome-extension\src\pages\side-panel\components\form\AdvancedSettings.vue
@@ -32,7 +32,7 @@ withDefaults(defineProps<AdvancedSettingsProps>(), {
 	labelAlign: "left"
 });
 
-const open = defineModel({ type: Boolean, required: true });
+const open = defineModel({ type: Boolean, default: false });
 </script>
 
 <style lang="scss" scoped>
