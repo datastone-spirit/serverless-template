@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-18 11:35:13
- * @LastEditTime: 2024-11-26 10:59:59
+ * @LastEditTime: 2024-11-27 09:19:09
  * @LastEditors: mulingyuer
  * @Description: llama-vision
  * @FilePath: \chrome-extension\src\pages\side-panel\views\llama-vision\index.vue
@@ -19,7 +19,7 @@
 		>
 			<ServerLessID ref="serverLessIDRef" v-model="form.serverlessId" name="serverlessId" />
 			<APIKey ref="apiKeyRef" v-model="form.apiKey" name="apiKey" />
-			<AdvancedSettings v-model="form.advancedSettings">
+			<AdvancedSettings>
 				<t-form-item label="返回内容的要求" name="promptType">
 					<t-select
 						:value="form.promptType"
@@ -102,7 +102,6 @@ export interface Form {
 	serverlessId: string;
 	apiKey: string;
 	img: UploadProps["value"];
-	advancedSettings: boolean;
 	/** 要求类型 */
 	promptType: string;
 	/** 要求的内容 */
@@ -140,7 +139,6 @@ const form = ref<Form>({
 	serverlessId: "",
 	apiKey: "",
 	img: [],
-	advancedSettings: false,
 	promptType: "",
 	promptWord: "",
 	role: "user",
