@@ -55,7 +55,6 @@ import PositivePrompt from "@side-panel/components/form/PositivePrompt.vue";
 import VideoResponse from "@side-panel/components/response/VideoResponse.vue";
 import { useServerlessStore, usePromptStore } from "@side-panel/stores";
 import type { FormInstanceFunctions, FormProps } from "tdesign-vue-next";
-import aaa from "./WeChat_20241127161605.mp4";
 
 export interface Form {
 	apiKey: string;
