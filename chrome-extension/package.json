@@ -1,7 +1,7 @@
 {
 	"name": "智灵Serverless API 测试工具",
 	"description": "专门为智灵Serverless API提供的测试工具",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"private": true,
 	"type": "module",
 	"scripts": {

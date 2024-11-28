@@ -77,7 +77,7 @@ export interface Form {
 interface ResultData {
 	status: string;
 	prompt_id: string;
-	image: string;
+	video: string;
 }
 
 const serverlessStore = useServerlessStore();
@@ -162,12 +162,13 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 					videoWidth: form.value.videoWidth + "",
 					videoHeight: form.value.videoHeight + "",
 					seed: (form.value.seed ? form.value.seed : -1) + "",
-					steps: form.value.steps + ""
+					steps: form.value.steps + "",
+					cfg: "7.5"
 				}
 			})
 		});
 
-		resultSrc.value = `data:video/mp4;base64,${resultData.image}`;
+		resultSrc.value = `data:video/mp4;base64,${resultData.video}`;
 
 		loading.value = false;
 	} catch (_error) {

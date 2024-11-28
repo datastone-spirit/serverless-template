@@ -9,8 +9,6 @@ import uuid
 from spirit_generated_model import RequestInput
 from prompt import prompt_text
 from typing import List
-from PIL import Image
-import io
 import json
 import base64
 
@@ -57,34 +55,30 @@ def create_prompt(prompt_obj: dict):
 
     return prompt
 
-def process_images(data_list: List[str]):
-    base64_images = []
-    logger.info(f"process_images data_list {data_list}")
+def process_video(data_list: List[str]):
+    base64_videos = []
+    logger.info(f"process_video data_list {data_list}")
 
     for item in data_list:
         logger.info(f"json load before {item}")
         parsed_data = json.loads(item)
         logger.info(f"json load after {parsed_data}")
 
-        # 检查执行类型并提取图像数据
         if parsed_data.get("type") == "executed" and "output" in parsed_data.get("data", {}):
             if parsed_data["data"]["output"]["gifs"]:
-                output_images = parsed_data["data"]["output"]["gifs"]
+                output_data = parsed_data["data"]["output"]["gifs"]
 
-                for img_info in output_images:
-                    filename = img_info["filename"]
-                    subfolder = img_info["subfolder"]
+                for video_info in output_data:
+                    filename = video_info["filename"]
+                    subfolder = video_info["subfolder"]
 
-                    # 构造图像文件的完整路径
-                    image_path = os.path.join(subfolder,'output', filename)
-                    logger.info(f"image_path: {image_path}")
+                    video_path = os.path.join(subfolder,'output', filename)
+                    logger.info(f"video_path: {video_path}")
 
-                    base64_str = mp4_to_base64(image_path)
-                    base64_images.append(base64_str)
-                    # 打开图像文件并转换为 Base64
-                
+                    base64_str = mp4_to_base64(video_path)
+                    base64_videos.append(base64_str)                
     
-    return base64_images
+    return base64_videos
 
 def get_request_input(request: Dict[str, Any]) -> RequestInput:
     logger.info(f"get_request_input------------------{request}")
@@ -97,33 +91,28 @@ def handler_impl(request_input: RequestInput, request: Dict[str, Any], env: Env)
     client_id = str(uuid.uuid4())
     server_host = os.getenv("COMFYUI_SERVER_HOST", "127.0.0.1")
     server_port = os.getenv("COMFYUI_SERVER_PORT", "8188")
-    output_node = "41" # 工作流最终展示节点
+    output_node = "77" # 工作流最终展示节点
     secure = False
 
     # 实例化ComfyUIClient
     client = ComfyUIClient(server_host=server_host, server_port=server_port, output_node=output_node, secure=secure)
         
-    logger.info(f"Received request with prompt: {prompt}")
-
     # 调用ComfyUIClient生成图片
     try:
         prompt_id = client.queue_prompt(prompt, client_id)
         
         
         # 获取生成的图像
-        images = client.get_images(client_id=client_id, prompt_id=prompt_id)
-        logger.info(f"Generated images data {images}")
-        images_base64 = process_images(images)
-        logger.info(f"images_base64--------------: {images_base64}")
+        video = client.get_video(client_id=client_id, prompt_id=prompt_id)
+        video_base64 = process_video(video)
         # 返回生成结果
         response = {
             "status": "success",
             "prompt_id": prompt_id,
-            "image": images_base64[0]
+            "video": video_base64[0]
         }
 
     except Exception as e:
-        logging.error(f"Error generating images: {e}")
         response = {
             "status": "error",
             "message": str(e)
