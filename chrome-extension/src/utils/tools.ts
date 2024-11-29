@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-15 15:25:46
- * @LastEditTime: 2024-11-21 11:04:29
+ * @LastEditTime: 2024-11-29 09:11:37
  * @LastEditors: mulingyuer
  * @Description: 工具函数
  * @FilePath: \chrome-extension\src\utils\tools.ts
@@ -188,4 +188,9 @@ function copyNodeText(node: HTMLElement | ShadowRoot): boolean {
 	}
 
 	return copyFlag;
+}
+
+/** 随机生成大模型种子 */
+export function generateSeed(min = 1, max = Math.pow(2, 32)) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }

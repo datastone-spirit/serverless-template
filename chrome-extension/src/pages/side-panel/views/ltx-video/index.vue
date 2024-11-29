@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-26 10:11:26
- * @LastEditTime: 2024-11-27 16:30:37
+ * @LastEditTime: 2024-11-29 10:33:11
  * @LastEditors: mulingyuer
  * @Description: LTX-Video
  * @FilePath: \chrome-extension\src\pages\side-panel\views\ltx-video\index.vue
@@ -30,8 +30,11 @@
 			/>
 			<AdvancedSettings>
 				<NegativePrompt v-model="form.negative" name="negative" />
-				<Seed v-model="form.seed" name="seed" />
+				<Seed v-model="form.seed" name="seed" placeholder="不填则随机生成种子数" />
 				<Steps v-model="form.steps" name="steps" />
+				<t-form-item label="cfg" name="cfg">
+					<t-input-number v-model.number="form.cfg" :min="0" :step="0.1" :decimal-places="1" />
+				</t-form-item>
 			</AdvancedSettings>
 			<SubmitCancelButtons :loading="loading" @on-cancel="onCancel" />
 		</t-form>
@@ -55,6 +58,7 @@ import PositivePrompt from "@side-panel/components/form/PositivePrompt.vue";
 import VideoResponse from "@side-panel/components/response/VideoResponse.vue";
 import { useServerlessStore, usePromptStore } from "@side-panel/stores";
 import type { FormInstanceFunctions, FormProps } from "tdesign-vue-next";
+import { generateSeed } from "@/utils/tools";
 
 export interface Form {
 	apiKey: string;
@@ -71,6 +75,8 @@ export interface Form {
 	seed: number | "";
 	/** 推理步骤 */
 	steps: number;
+	/** 采样微调cfg */
+	cfg: number;
 }
 
 interface ResultData {
@@ -87,11 +93,13 @@ const form = ref<Form>({
 	serverlessId: "",
 	apiKey: "",
 	positive: "",
-	negative: "",
+	negative:
+		"low quality, worst quality, deformed, distorted, disfigured, motion smear, motion artifacts, fused fingers, bad anatomy, weird hand, ugly",
 	videoWidth: 768,
 	videoHeight: 512,
 	seed: "",
-	steps: 30
+	steps: 30,
+	cfg: 7.5
 });
 const rules: FormProps["rules"] = {
 	serverlessId: [{ required: true, message: "请填写ServerLess ID", trigger: "blur" }],
@@ -119,10 +127,25 @@ const rules: FormProps["rules"] = {
 			trigger: "blur"
 		}
 	],
-	steps: [
+	steps: [{ required: true, message: "请填写推理步数", trigger: "blur" }],
+	cfg: [
 		{
 			required: true,
-			message: "请填写推理步数",
+			validator: (val) => {
+				if (isNaN(+val)) {
+					return {
+						message: "请填写采样微调cfg数值",
+						result: false,
+						type: "error"
+					};
+				}
+
+				return {
+					message: "",
+					result: true,
+					type: "success"
+				};
+			},
 			trigger: "blur"
 		}
 	]
@@ -141,8 +164,8 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 		// 缓存数据
 		await saveForm();
 		requestController = new AbortController();
-
 		// api请求
+		resultSrc.value = "";
 		const resultData = await request<ResultData>({
 			url: `${form.value.serverlessId}/sync`,
 			method: "post",
@@ -158,16 +181,18 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 				input: {
 					positive: form.value.positive,
 					negative: form.value.negative,
-					videoWidth: form.value.videoWidth + "",
-					videoHeight: form.value.videoHeight + "",
-					seed: (form.value.seed ? form.value.seed : -1) + "",
-					steps: form.value.steps + "",
-					cfg: "7.5"
+					videoWidth: form.value.videoWidth.toString(),
+					videoHeight: form.value.videoHeight.toString(),
+					seed: form.value.seed ? form.value.seed.toString() : generateSeed().toString(),
+					steps: form.value.steps.toString(),
+					cfg: form.value.cfg.toString()
 				}
 			})
 		});
 
-		resultSrc.value = `data:video/mp4;base64,${resultData.video}`;
+		if (resultData.video) {
+			resultSrc.value = `data:video/mp4;base64,${resultData.video}`;
+		}
 
 		loading.value = false;
 	} catch (_error) {
