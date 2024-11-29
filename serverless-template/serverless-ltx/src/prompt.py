@@ -40,20 +40,6 @@ prompt_text = r'''
     },
     "class_type": "CLIPLoader"
   },
-  "41": {
-    "inputs": {
-      "filename_prefix": "ComfyUI",
-      "fps": 24,
-      "lossless": false,
-      "quality": 90,
-      "method": "default",
-      "images": [
-        "8",
-        0
-      ]
-    },
-    "class_type": "SaveAnimatedWEBP"
-  },
   "44": {
     "inputs": {
       "ckpt_name": "ltx-video-2b-v0.9.safetensors"
@@ -87,7 +73,7 @@ prompt_text = r'''
     "inputs": {
       "steps": 30,
       "max_shift": 2.05,
-      "base_shift": 0.95,
+      "base_shift": 0.9500000000000001,
       "stretch": true,
       "terminal": 0.1,
       "latent": [

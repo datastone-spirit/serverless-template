@@ -120,11 +120,6 @@ def handler_impl(request_input: RequestInput, request: Dict[str, Any], env: Env)
     client.close()
     return response
 
-    """
-    Your handler implementation goes here.
-    """
-    pass
-
 def handler(request: Dict[str, Any], env: Env):
     request_input = get_request_input(request)
     logger.info(f"handler------------------: {request_input}")
