@@ -1,7 +1,7 @@
 <!--
  * @Author: mulingyuer
  * @Date: 2024-11-26 10:11:26
- * @LastEditTime: 2024-11-29 10:33:11
+ * @LastEditTime: 2024-11-29 10:50:12
  * @LastEditors: mulingyuer
  * @Description: LTX-Video
  * @FilePath: \chrome-extension\src\pages\side-panel\views\ltx-video\index.vue
@@ -170,7 +170,7 @@ const onSubmit: FormProps["onSubmit"] = async ({ validateResult }) => {
 			url: `${form.value.serverlessId}/sync`,
 			method: "post",
 			responseType: "json",
-			timeout: 100000000, // 100秒超时
+			timeout: false, // 请求不会超时
 			signal: requestController.signal,
 			prefixUrl: serverlessStore.baseUrl,
 			headers: {
