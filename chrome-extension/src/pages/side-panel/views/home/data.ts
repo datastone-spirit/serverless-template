@@ -1,7 +1,7 @@
 /*
  * @Author: mulingyuer
  * @Date: 2024-11-05 10:51:07
- * @LastEditTime: 2024-11-26 10:12:56
+ * @LastEditTime: 2024-12-02 10:28:26
  * @LastEditors: mulingyuer
  * @Description: 本地数据
  * @FilePath: \chrome-extension\src\pages\side-panel\views\home\data.ts
@@ -69,7 +69,8 @@ export const HomeList: List = [
 	{
 		name: "LTX-Video",
 		description: "使用LTX-Video进行文生视频制作",
-		detailUrl: "",
+		detailUrl:
+			"https://serverless.datastone.cn/sprite/app/tmpl/serverless-detail?id=57&pyType=serverlessOfficial",
 		img: ltxvImg,
 		routerName: "ServerlessLtxVideo"
 	}
